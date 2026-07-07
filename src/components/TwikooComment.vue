@@ -32,7 +32,12 @@ async function initTwikoo() {
   // 延迟1秒加载，不阻塞页面渲染
   await new Promise(resolve => setTimeout(resolve, 1000))
   try {
-    const twikoo = (await import('twikoo')).default
+    const twikooModule = await import('twikoo')
+    // twikoo 可能是 named export 或 default export，兼容两种情况
+    const twikoo = twikooModule.default || twikooModule
+    if (typeof twikoo.init !== 'function') {
+      throw new Error('twikoo.init 不存在，请检查 twikoo 版本和导入方式')
+    }
     // 30秒超时保护，Cloudflare Pages(海外)连接腾讯云开发(国内)延迟较大
     const initPromise = new Promise((resolve, reject) => {
       const timer = setTimeout(() => reject(new Error('Twikoo connection timeout')), 30000)
