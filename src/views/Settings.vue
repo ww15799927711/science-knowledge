@@ -30,7 +30,7 @@
       <p style="font-size: 14px; color: var(--color-text-secondary); line-height: 1.8;">
         科学常识网站 v1.0<br>
         基于微信小程序"科学常识"内容构建<br>
-        包含 187 个知识点、43 个话题、119 个历史事件
+        包含 275 个知识点、43 个话题、119 个历史事件
       </p>
     </div>
   </div>
