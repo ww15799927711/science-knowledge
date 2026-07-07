@@ -1,8 +1,70 @@
 <template>
   <div class="home">
     <div class="hero">
-      <h1>🔬 科学常识</h1>
+      <h1>🔬 人与自然</h1>
       <p class="hero-sub">探索自然与技术的奥秘</p>
+    </div>
+
+    <!-- 搜索 -->
+    <div class="search-section">
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input v-model="keyword" placeholder="搜索知识点、话题、历史事件..." @input="doSearch" />
+      </div>
+      <div v-if="searched" class="search-results">
+        <div v-if="results.knowledge.length > 0">
+          <div class="section-subtitle" style="margin-top: 12px;">知识点 ({{ results.knowledge.length }})</div>
+          <div class="list">
+            <router-link
+              v-for="r in results.knowledge"
+              :key="'k' + r.item.kpId"
+              :to="'/knowledge/' + r.item.category + '/' + r.item.kpId"
+              class="list-item"
+            >
+              <div class="list-item-content">
+                <div class="list-item-title">{{ r.item.title }}</div>
+                <div class="list-item-desc">{{ r.item.summary }}</div>
+              </div>
+            </router-link>
+          </div>
+        </div>
+        <div v-if="results.topics.length > 0">
+          <div class="section-subtitle" style="margin-top: 12px;">话题 ({{ results.topics.length }})</div>
+          <div class="list">
+            <router-link
+              v-for="r in results.topics"
+              :key="'t' + r.item.topicId"
+              :to="'/topics/' + r.item.subcategory + '/' + r.item.topicId"
+              class="list-item"
+            >
+              <div class="list-item-content">
+                <div class="list-item-title">{{ r.item.title }}</div>
+                <div class="list-item-desc">{{ r.item.summary }}</div>
+              </div>
+            </router-link>
+          </div>
+        </div>
+        <div v-if="results.history.length > 0">
+          <div class="section-subtitle" style="margin-top: 12px;">科学简史 ({{ results.history.length }})</div>
+          <div class="list">
+            <router-link
+              v-for="r in results.history"
+              :key="'h' + r.item.entryId"
+              :to="'/history/' + r.item.period + '/' + r.item.entryId"
+              class="list-item"
+            >
+              <div class="list-item-content">
+                <div class="list-item-title">{{ r.item.title }}</div>
+                <div class="list-item-desc">{{ r.item.summary }}</div>
+              </div>
+            </router-link>
+          </div>
+        </div>
+        <div v-if="results.knowledge.length === 0 && results.topics.length === 0 && results.history.length === 0" class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <div class="empty-tip">没有找到相关内容</div>
+        </div>
+      </div>
     </div>
 
     <div class="daily-pick card" v-if="dailyPick">
@@ -49,14 +111,33 @@
 </template>
 
 <script setup>
+import { ref, reactive } from 'vue'
 import { getDailyPick } from '@/utils/recommendation'
 import { getAllKnowledge, getAllTopics, getAllHistory, getCategories } from '@/utils/data'
+import { searchAll } from '@/utils/search'
 
 const dailyPick = getDailyPick()
 const knowledgeCount = getAllKnowledge().length
 const topicCount = getAllTopics().length
 const historyCount = getAllHistory().length
 const categories = getCategories()
+
+// 搜索
+const keyword = ref('')
+const searched = ref(false)
+const results = reactive({ knowledge: [], topics: [], history: [] })
+
+function doSearch() {
+  if (!keyword.value.trim()) {
+    searched.value = false
+    return
+  }
+  searched.value = true
+  const r = searchAll(keyword.value)
+  results.knowledge = r.knowledge
+  results.topics = r.topics
+  results.history = r.history
+}
 
 function getPickRoute() {
   if (!dailyPick) return '/'
@@ -101,6 +182,13 @@ function getPickRoute() {
   font-size: 16px;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
+
+/* 搜索区域 */
+.search-section { padding: 0 16px; margin-bottom: 16px; }
+.search-results { margin-top: 8px; }
+.search-results .list { display: flex; flex-direction: column; gap: 1px; background: var(--color-divider); border-radius: var(--radius-card); overflow: hidden; }
+.search-results .list-item { text-decoration: none; color: var(--color-text); background: var(--color-card); padding: 14px 16px; }
+.search-results .list-item:hover { background: var(--color-bg); }
 
 .daily-pick { margin-top: 16px; }
 .pick-header { margin-bottom: 8px; }

@@ -3,14 +3,13 @@
     <div class="navbar-inner">
       <router-link to="/" class="navbar-brand">
         <span class="brand-icon">🔬</span>
-        <span class="brand-text">科学常识</span>
+        <span class="brand-text">人与自然</span>
       </router-link>
       <div class="navbar-links" :class="{ open: menuOpen }">
         <router-link to="/" class="nav-link" @click="menuOpen = false">首页</router-link>
         <router-link to="/knowledge" class="nav-link" @click="menuOpen = false">知识点</router-link>
         <router-link to="/topics" class="nav-link" @click="menuOpen = false">轻松话题</router-link>
         <router-link to="/history" class="nav-link" @click="menuOpen = false">科学简史</router-link>
-        <router-link to="/search" class="nav-link" @click="menuOpen = false">搜索</router-link>
         <router-link to="/settings" class="nav-link" @click="menuOpen = false">设置</router-link>
       </div>
       <button class="menu-toggle" @click="menuOpen = !menuOpen">
