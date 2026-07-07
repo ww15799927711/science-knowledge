@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-enter">
     <h1 class="section-title">📜 科学简史</h1>
     <p class="section-subtitle">人类探索自然的伟大历程</p>
     <div class="grid">
@@ -7,9 +7,9 @@
         v-for="period in periods"
         :key="period.id"
         :to="'/history/' + period.id"
-        class="card period-card"
-        :style="{ borderTopColor: period.color }"
+        class="period-card"
       >
+        <div class="period-accent" :style="{ background: period.color }"></div>
         <div class="period-name">{{ period.name }}</div>
         <div class="period-theme">{{ period.theme }}</div>
         <div class="period-count">{{ getCount(period.name) }} 条</div>
@@ -31,21 +31,37 @@ function getCount(name) {
 .period-card {
   text-decoration: none;
   color: var(--color-text);
-  border-top: 4px solid;
-  transition: all 0.25s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 120px;
-  padding: 16px 12px;
+  min-height: 130px;
+  padding: 18px 14px;
+  background: var(--color-card-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+.period-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
 }
 .period-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
 }
 .period-name {
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -54,11 +70,15 @@ function getCount(name) {
 .period-theme {
   font-size: 12px;
   color: var(--color-text-secondary);
-  margin-top: 4px;
+  margin-top: 6px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 100%;
 }
-.period-count { font-size: 12px; color: var(--color-text-hint); margin-top: 4px; }
+.period-count {
+  font-size: 12px;
+  color: var(--color-text-hint);
+  margin-top: 6px;
+}
 </style>

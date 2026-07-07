@@ -1,5 +1,5 @@
 /* ========================================
-   科学常识 · 全局样式 (Web版)
+   人与自然 · 全局样式 (Web版)
    rpx → px: 除以2
    ======================================== */
 
@@ -7,32 +7,44 @@
 :root {
   --color-primary: #3B82F6;
   --color-primary-light: #DBEAFE;
+  --color-primary-dark: #2563EB;
   --color-accent: #10B981;
   --color-accent-light: #D1FAE5;
   --color-warning: #F59E0B;
   --color-danger: #EF4444;
   --color-bg: #F5F5F0;
   --color-card: #FFFFFF;
+  --color-card-glass: rgba(255, 255, 255, 0.72);
   --color-text: #1F2937;
   --color-text-secondary: #6B7280;
   --color-text-hint: #9CA3AF;
   --color-border: #E5E7EB;
   --color-divider: #F3F4F6;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow-card: 0 1px 6px rgba(0, 0, 0, 0.06);
-  --radius-card: 10px;
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+  --radius-sm: 6px;
+  --radius-card: 12px;
   --radius-badge: 4px;
+  --radius-pill: 20px;
   --font-scale: 1;
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 12px;
   --spacing-lg: 16px;
   --spacing-xl: 24px;
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* --- 深色主题 --- */
 [data-theme="dark"] {
   --color-bg: #111827;
   --color-card: #1F2937;
+  --color-card-glass: rgba(31, 41, 55, 0.8);
   --color-text: #F3F4F6;
   --color-text-secondary: #9CA3AF;
   --color-text-hint: #6B7280;
@@ -41,12 +53,15 @@
   --color-primary-light: #1E3A5F;
   --color-accent-light: #064E3B;
   --shadow-card: 0 1px 6px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 /* --- 护眼主题 --- */
 [data-theme="green"] {
   --color-bg: #F0F5E8;
   --color-card: #FAFFF5;
+  --color-card-glass: rgba(250, 255, 245, 0.75);
   --color-text: #2D3B1F;
   --color-text-secondary: #5F6B4F;
   --color-text-hint: #8B9578;
@@ -70,7 +85,7 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
   font-size: calc(15px * var(--font-scale));
   color: var(--color-text);
   background-color: var(--color-bg);
@@ -81,14 +96,25 @@ body {
   background-attachment: fixed;
   line-height: 1.8;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
   color: var(--color-primary);
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
 a:hover {
-  opacity: 0.8;
+  color: var(--color-primary-dark, #2563EB);
+}
+
+/* --- 毛玻璃卡片 --- */
+.glass {
+  background: var(--color-card-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 /* --- 卡片 --- */
@@ -98,12 +124,12 @@ a:hover {
   box-shadow: var(--shadow-card);
   padding: 16px;
   margin-bottom: 12px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.18);
+  box-shadow: var(--shadow-md);
 }
 
 /* --- 排版系统（科普内容专用） --- */
@@ -156,10 +182,11 @@ a:hover {
 /* --- 标签/Badge --- */
 .badge {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: var(--radius-badge);
   font-size: calc(11px * var(--font-scale));
   line-height: 1.6;
+  font-weight: 500;
 }
 
 .badge-primary {
@@ -190,9 +217,9 @@ a:hover {
   color: var(--color-text);
   margin-bottom: 10px;
   padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 8px;
   display: inline-block;
 }
@@ -216,13 +243,14 @@ a:hover {
   padding: 10px 12px;
   margin-bottom: 6px;
   background: var(--color-bg);
-  border-radius: var(--radius-badge);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: all var(--transition-fast);
 }
 
 .ref-item:hover {
-  opacity: 0.7;
+  background: var(--color-primary-light);
+  transform: translateX(4px);
 }
 
 .ref-type {
@@ -233,6 +261,7 @@ a:hover {
   border-radius: 3px;
   margin-right: 8px;
   white-space: nowrap;
+  font-weight: 500;
 }
 
 .ref-title {
@@ -255,10 +284,17 @@ a:hover {
   display: flex;
   align-items: center;
   background: var(--color-card);
-  border-radius: 20px;
-  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
   margin: 10px 0;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-base);
+}
+
+.search-bar:focus-within {
+  box-shadow: var(--shadow-glow);
+  border-color: var(--color-primary);
 }
 
 .search-bar input {
@@ -277,7 +313,7 @@ a:hover {
 
 .search-icon {
   font-size: 16px;
-  margin-right: 6px;
+  margin-right: 8px;
   color: var(--color-text-hint);
 }
 
@@ -296,11 +332,12 @@ a:hover {
   background: var(--color-card);
   border-bottom: 1px solid var(--color-divider);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all var(--transition-fast);
 }
 
 .list-item:hover {
   background: var(--color-bg);
+  padding-left: 20px;
 }
 
 .list-item-content {
@@ -332,6 +369,7 @@ a:hover {
   min-width: 30px;
   text-align: center;
   padding-top: 2px;
+  font-weight: 500;
 }
 
 /* --- 空状态 --- */
@@ -352,28 +390,48 @@ a:hover {
 
 /* --- 按钮 --- */
 .btn {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: var(--radius-badge);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: var(--radius-pill);
   font-size: calc(14px * var(--font-scale));
+  font-weight: 500;
   cursor: pointer;
   border: none;
-  transition: opacity 0.2s;
+  transition: all var(--transition-base);
+  white-space: nowrap;
 }
 
 .btn:hover {
-  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
 }
 
 .btn-primary {
   background: var(--color-primary);
   color: #fff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
 }
 
 .btn-outline {
   background: transparent;
-  border: 1px solid var(--color-border);
+  border: 1.5px solid var(--color-border);
   color: var(--color-text-secondary);
+}
+
+.btn-outline:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-light);
 }
 
 /* --- 标签云 --- */
@@ -390,7 +448,7 @@ a:hover {
   font-size: calc(13px * var(--font-scale));
   color: var(--color-text-secondary);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
 }
 
 .tag:hover {
@@ -401,6 +459,22 @@ a:hover {
 .tag.active {
   background: var(--color-primary);
   color: #fff;
+}
+
+/* --- 页面进入动画 --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: fadeInUp 0.35s var(--transition-base) both;
 }
 
 /* --- 响应式 --- */

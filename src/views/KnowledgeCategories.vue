@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-enter">
     <h1 class="section-title">⚛️ 知识点分类</h1>
     <p class="section-subtitle">共 {{ categories.length }} 个学科分类</p>
     <div class="grid">
@@ -7,10 +7,11 @@
         v-for="cat in categories"
         :key="cat.id"
         :to="'/knowledge/' + cat.id"
-        class="card cat-card"
-        :style="{ borderLeftColor: cat.color }"
+        class="cat-card"
       >
-        <div class="cat-icon">{{ cat.icon }}</div>
+        <div class="cat-icon-wrap" :style="{ background: cat.color + '22' }">
+          <span class="cat-icon">{{ cat.icon }}</span>
+        </div>
         <div class="cat-name">{{ cat.name }}</div>
         <div class="cat-desc" v-if="cat.description">{{ cat.description }}</div>
         <div class="cat-count">{{ getCount(cat.id) }} 条</div>
@@ -30,21 +31,40 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
 .cat-card {
   text-decoration: none;
   color: var(--color-text);
-  border-left: 4px solid;
-  transition: all 0.25s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 120px;
+  min-height: 140px;
   text-align: center;
-  padding: 16px 12px;
+  padding: 20px 12px;
+  background: var(--color-card-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
 }
 .cat-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(59, 130, 246, 0.3);
 }
-.cat-icon { font-size: 28px; margin-bottom: 8px; }
+.cat-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  transition: transform var(--transition-base);
+}
+.cat-card:hover .cat-icon-wrap {
+  transform: scale(1.1);
+}
+.cat-icon { font-size: 22px; }
 .cat-name {
   font-weight: 600;
   font-size: 14px;
@@ -53,9 +73,13 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   white-space: nowrap;
   max-width: 100%;
 }
-.cat-count { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
-.cat-desc {
+.cat-count {
   font-size: 12px;
+  color: var(--color-text-hint);
+  margin-top: 4px;
+}
+.cat-desc {
+  font-size: 11px;
   color: var(--color-text-secondary);
   margin-top: 4px;
   overflow: hidden;

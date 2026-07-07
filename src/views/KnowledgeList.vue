@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <div style="margin-bottom: 16px;">
-      <router-link to="/knowledge" class="back-link">← 返回分类</router-link>
-    </div>
-    <h1 class="section-title">{{ categoryName }}</h1>
+  <div class="page-enter">
+    <Breadcrumb
+      sectionName="知识点分类"
+      sectionLink="/knowledge"
+      :title="categoryName"
+    />
     <p class="section-subtitle">共 {{ items.length }} 个知识点</p>
     <div class="list">
       <router-link
@@ -19,16 +20,19 @@
         </div>
       </router-link>
     </div>
-    <div v-if="visibleItems.length < items.length" class="load-more-wrap">
-      <button class="btn btn-outline load-more-btn" @click="visibleCount += 10">加载更多 ({{ items.length - visibleItems.length }} 条)</button>
+    <div v-if="visibleCount < items.length" class="load-more-wrap">
+      <button class="btn btn-outline" @click="visibleCount += 10">
+        加载更多 (还有 {{ items.length - visibleCount }} 条)
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { getKnowledgeByCategory, getCategories } from '@/utils/data'
+import Breadcrumb from '@/components/Breadcrumb.vue'
 
 const route = useRoute()
 const category = computed(() => route.params.category)
@@ -42,9 +46,14 @@ const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
 </script>
 
 <style scoped>
-.back-link { color: var(--color-primary); font-size: 14px; text-decoration: none; }
 .list { display: flex; flex-direction: column; gap: 1px; background: var(--color-divider); border-radius: var(--radius-card); overflow: hidden; }
-.list-item { text-decoration: none; color: var(--color-text); border-bottom: none; }
-.load-more-wrap { text-align: center; margin-top: 16px; }
-.load-more-btn { min-width: 180px; }
+.list-item {
+  text-decoration: none;
+  color: var(--color-text);
+  border-bottom: none;
+  background: var(--color-card-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.load-more-wrap { display: flex; justify-content: center; margin-top: 16px; }
 </style>

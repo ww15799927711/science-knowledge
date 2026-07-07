@@ -1,9 +1,10 @@
 <template>
-  <div>
-    <div style="margin-bottom: 16px;">
-      <router-link to="/history" class="back-link">← 返回时期</router-link>
-    </div>
-    <h1 class="section-title">{{ periodName }}</h1>
+  <div class="page-enter">
+    <Breadcrumb
+      sectionName="科学简史"
+      sectionLink="/history"
+      :title="periodName"
+    />
     <p class="section-subtitle">共 {{ items.length }} 个事件</p>
     <div class="timeline">
       <div v-for="item in visibleItems" :key="item.entryId" class="timeline-item">
@@ -11,28 +12,28 @@
         <div class="timeline-content">
           <router-link
             :to="'/history/' + period + '/' + item.entryId"
-            class="list-item"
-            style="border-radius: var(--radius-card);"
+            class="timeline-card"
           >
-            <div class="list-item-content">
-              <div style="font-size: 12px; color: var(--color-text-hint); margin-bottom: 4px;">{{ item.year }} · {{ item.figures }}</div>
-              <div class="list-item-title">{{ item.title }}</div>
-              <div class="list-item-desc">{{ item.summary }}</div>
-            </div>
+            <div class="timeline-meta">{{ item.year }} · {{ item.figures }}</div>
+            <div class="list-item-title">{{ item.title }}</div>
+            <div class="list-item-desc">{{ item.summary }}</div>
           </router-link>
         </div>
       </div>
     </div>
-    <div v-if="visibleItems.length < items.length" class="load-more-wrap">
-      <button class="btn btn-outline load-more-btn" @click="visibleCount += 10">加载更多 ({{ items.length - visibleItems.length }} 条)</button>
+    <div v-if="visibleCount < items.length" class="load-more-wrap">
+      <button class="btn btn-outline" @click="visibleCount += 10">
+        加载更多 (还有 {{ items.length - visibleCount }} 条)
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { getHistoryByPeriod, getHistoryPeriods } from '@/utils/data'
+import Breadcrumb from '@/components/Breadcrumb.vue'
 
 const route = useRoute()
 const period = computed(() => route.params.period)
@@ -46,7 +47,6 @@ const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
 </script>
 
 <style scoped>
-.back-link { color: var(--color-primary); font-size: 14px; text-decoration: none; }
 .timeline { position: relative; padding-left: 24px; }
 .timeline::before {
   content: '';
@@ -66,9 +66,30 @@ const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
   height: 10px;
   border-radius: 50%;
   background: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 .timeline-content { margin-left: 8px; }
-.list-item { text-decoration: none; color: var(--color-text); background: var(--color-card); box-shadow: var(--shadow-card); padding: 14px 16px; }
-.load-more-wrap { text-align: center; margin-top: 16px; }
-.load-more-btn { min-width: 180px; }
+.timeline-card {
+  text-decoration: none;
+  color: var(--color-text);
+  background: var(--color-card-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  padding: 14px 16px;
+  display: block;
+  transition: all var(--transition-base);
+}
+.timeline-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.timeline-meta {
+  font-size: 12px;
+  color: var(--color-text-hint);
+  margin-bottom: 4px;
+}
+.load-more-wrap { display: flex; justify-content: center; margin-top: 16px; }
 </style>

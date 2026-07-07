@@ -1,5 +1,5 @@
 <template>
-  <div v-if="item">
+  <div v-if="item" class="page-enter">
     <Breadcrumb
       sectionName="科学简史"
       sectionLink="/history"
@@ -7,14 +7,14 @@
       :subLink="'/history/' + item.period"
       :title="item.title"
     />
-    <div class="card">
-      <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+    <div class="detail-card">
+      <div class="detail-badges">
         <span class="badge badge-warning">{{ item.period }}</span>
         <span class="badge badge-outline">{{ item.year }}</span>
       </div>
-      <h1 class="section-title" style="font-size: 22px;">{{ item.title }}</h1>
-      <p style="color: var(--color-text-secondary); margin-bottom: 4px;"><strong>人物：</strong>{{ item.figures }}</p>
-      <p style="color: var(--color-text-secondary); margin-bottom: 16px;">{{ item.summary }}</p>
+      <h1 class="detail-title">{{ item.title }}</h1>
+      <p class="detail-meta"><strong>人物：</strong>{{ item.figures }}</p>
+      <p class="detail-summary">{{ item.summary }}</p>
       <ContentBody :content="item.content" />
       <div v-if="item.background" class="info-box">
         <strong>📖 背景</strong>
@@ -27,7 +27,7 @@
       <div v-if="item.quote" class="quote-box">
         "{{ item.quote }}"
       </div>
-      <div v-if="item.tags && item.tags.length" style="margin-top: 12px;">
+      <div v-if="item.tags && item.tags.length" class="detail-section">
         <div class="tag-list">
           <span v-for="t in item.tags" :key="t" class="tag">#{{ t }}</span>
         </div>
@@ -59,9 +59,38 @@ const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.rel
 </script>
 
 <style scoped>
+.detail-card {
+  background: var(--color-card-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+}
+.detail-badges { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.detail-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.detail-meta {
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+.detail-summary {
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.7;
+  font-size: 14px;
+}
+.detail-section { margin-top: 16px; }
 .info-box {
   background: var(--color-bg);
-  border-radius: var(--radius-badge);
+  border-radius: var(--radius-sm);
   padding: 12px;
   margin-top: 12px;
   font-size: 14px;
@@ -77,6 +106,6 @@ const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.rel
   font-style: italic;
   font-size: 15px;
   color: var(--color-text-secondary);
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 var(--radius-badge) var(--radius-badge) 0;
 }
 </style>

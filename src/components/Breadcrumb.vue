@@ -29,18 +29,27 @@ defineProps({
   flex-wrap: wrap;
   gap: 4px;
   margin-bottom: 16px;
+  padding: 8px 14px;
   font-size: 13px;
   color: var(--color-text-hint);
+  background: var(--color-card-glass);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-sm);
 }
 .bc-link {
   color: var(--color-primary);
   text-decoration: none;
-  transition: opacity 0.2s;
+  transition: color var(--transition-fast);
+  font-weight: 500;
 }
-.bc-link:hover { opacity: 0.7; }
+.bc-link:hover { color: var(--color-primary-dark, #2563EB); }
 .bc-sep { margin: 0 2px; color: var(--color-text-hint); }
 .bc-current {
-  color: var(--color-text-secondary);
+  color: var(--color-text);
+  font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="item">
+  <div v-if="item" class="page-enter">
     <Breadcrumb
       sectionName="轻松话题"
       sectionLink="/topics"
@@ -7,17 +7,17 @@
       :subLink="'/topics/' + subcategory"
       :title="item.title"
     />
-    <div class="card">
-      <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+    <div class="detail-card">
+      <div class="detail-badges">
         <span class="badge badge-accent">{{ item.subcategory }}</span>
       </div>
-      <h1 class="section-title" style="font-size: 22px;">{{ item.title }}</h1>
-      <p style="color: var(--color-text-secondary); margin-bottom: 16px;">{{ item.summary }}</p>
+      <h1 class="detail-title">{{ item.title }}</h1>
+      <p class="detail-summary">{{ item.summary }}</p>
       <ContentBody :content="item.content" />
       <div v-if="item.funFact" class="fun-fact-box">
         <strong>🎉 趣味小知识：</strong>{{ item.funFact }}
       </div>
-      <div v-if="item.tags && item.tags.length" style="margin-top: 12px;">
+      <div v-if="item.tags && item.tags.length" class="detail-section">
         <div class="tag-list">
           <span v-for="t in item.tags" :key="t" class="tag">#{{ t }}</span>
         </div>
@@ -50,11 +50,35 @@ const relatedHistory = computed(() => item.value ? getRelatedItems(item.value.re
 </script>
 
 <style scoped>
+.detail-card {
+  background: var(--color-card-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+}
+.detail-badges { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.detail-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.detail-summary {
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.7;
+  font-size: 14px;
+}
+.detail-section { margin-top: 16px; }
 .fun-fact-box {
   background: var(--color-accent-light);
   border-left: 3px solid var(--color-accent);
   padding: 12px;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 var(--radius-badge) var(--radius-badge) 0;
   margin-top: 16px;
   font-size: 14px;
   line-height: 1.8;
