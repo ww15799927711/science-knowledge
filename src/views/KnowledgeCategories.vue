@@ -9,7 +9,7 @@
         :to="'/knowledge/' + cat.id"
         class="cat-card"
       >
-        <div class="cat-icon-wrap" :style="{ background: cat.color + '22' }">
+        <div class="cat-icon-wrap" :style="{ '--icon-color': cat.color }">
           <span class="cat-icon">{{ cat.icon }}</span>
         </div>
         <div class="cat-name">{{ cat.name }}</div>
@@ -56,13 +56,15 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   width: 44px;
   height: 44px;
   border-radius: 12px;
+  background: color-mix(in srgb, var(--icon-color) 13%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
-  transition: transform var(--transition-base);
+  transition: background var(--transition-fast), transform var(--transition-base);
 }
 .cat-card:hover .cat-icon-wrap {
+  background: color-mix(in srgb, var(--icon-color) 50%, transparent);
   transform: scale(1.1);
 }
 .cat-icon { font-size: 22px; }

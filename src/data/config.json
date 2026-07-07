@@ -88,36 +88,42 @@
       "id": "日常解密",
       "name": "日常解密",
       "icon": "🏠",
+      "color": "#FF7043",
       "description": "生活中的科学谜题"
     },
     {
       "id": "行为解密",
       "name": "行为解密",
       "icon": "🧠",
+      "color": "#AB47BC",
       "description": "为什么我们会这样做"
     },
     {
       "id": "生存系列",
       "name": "生存系列",
       "icon": "🏕️",
+      "color": "#2E7D32",
       "description": "极端条件下的科学"
     },
     {
       "id": "穿越系列",
       "name": "穿越系列",
       "icon": "🕰️",
+      "color": "#FF8F00",
       "description": "假如时光可以倒流"
     },
     {
       "id": "身体系列",
       "name": "身体系列",
       "icon": "🫁",
+      "color": "#EF5350",
       "description": "身体的奇妙反应"
     },
     {
       "id": "极端环境",
       "name": "极端环境",
       "icon": "🌋",
+      "color": "#5C6BC0",
       "description": "极限条件下的物理法则"
     }
   ],

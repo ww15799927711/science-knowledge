@@ -9,7 +9,7 @@
         :to="'/topics/' + sub.id"
         class="sub-card"
       >
-        <div class="sub-icon-wrap">
+        <div class="sub-icon-wrap" :style="{ '--icon-color': sub.color }">
           <span class="sub-icon">{{ sub.icon }}</span>
         </div>
         <div class="sub-name">{{ sub.name }}</div>
@@ -58,14 +58,15 @@ function getCount(name) {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(16, 185, 129, 0.1);
+  background: color-mix(in srgb, var(--icon-color) 13%, transparent);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 10px;
-  transition: transform var(--transition-base);
+  transition: background var(--transition-fast), transform var(--transition-base);
 }
 .sub-card:hover .sub-icon-wrap {
+  background: color-mix(in srgb, var(--icon-color) 50%, transparent);
   transform: scale(1.1);
 }
 .sub-icon { font-size: 22px; }

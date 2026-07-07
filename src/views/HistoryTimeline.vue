@@ -10,6 +10,9 @@
         class="period-card"
       >
         <div class="period-accent" :style="{ background: period.color }"></div>
+        <div class="period-icon-wrap" :style="{ '--icon-color': period.color }">
+          <span class="period-icon">{{ period.name.charAt(0) }}</span>
+        </div>
         <div class="period-name">{{ period.name }}</div>
         <div class="period-theme">{{ period.theme }}</div>
         <div class="period-count">{{ getCount(period.name) }} 条</div>
@@ -54,6 +57,32 @@ function getCount(name) {
   right: 0;
   height: 3px;
   border-radius: var(--radius-card) var(--radius-card) 0 0;
+}
+.period-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--icon-color) 13%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 6px;
+  margin-bottom: 4px;
+  transition: background var(--transition-fast), transform var(--transition-base);
+}
+.period-icon {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--icon-color);
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+.period-card:hover .period-icon-wrap {
+  background: color-mix(in srgb, var(--icon-color) 50%, transparent);
+  transform: scale(1.1);
+}
+.period-card:hover .period-icon {
+  opacity: 1;
 }
 .period-card:hover {
   transform: translateY(-4px);
