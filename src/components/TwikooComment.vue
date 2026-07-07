@@ -33,9 +33,9 @@ async function initTwikoo() {
   await new Promise(resolve => setTimeout(resolve, 1000))
   try {
     const twikoo = (await import('twikoo')).default
-    // 10秒超时保护，防止Vercel后端连接过慢阻塞页面
+    // 30秒超时保护，Cloudflare Pages(海外)连接腾讯云开发(国内)延迟较大
     const initPromise = new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('Twikoo connection timeout')), 10000)
+      const timer = setTimeout(() => reject(new Error('Twikoo connection timeout')), 30000)
       twikoo.init({
         envId: TIKOO_ENV,
         el: '#twikoo-container',
