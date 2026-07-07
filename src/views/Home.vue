@@ -82,10 +82,25 @@ function getPickRoute() {
 .home { padding: 8px 0; }
 .hero {
   text-align: center;
-  padding: 32px 0 24px;
+  padding: 32px 24px;
+  margin: 0 16px 16px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-card);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
-.hero h1 { font-size: 28px; margin-bottom: 8px; }
-.hero-sub { color: var(--color-text-secondary); font-size: 16px; }
+.hero h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.hero-sub {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 16px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
 
 .daily-pick { margin-top: 16px; }
 .pick-header { margin-bottom: 8px; }
@@ -125,6 +140,9 @@ function getPickRoute() {
   font-size: 13px;
   text-decoration: none;
   color: var(--color-text);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   transition: all 0.2s;
 }
 .cat-tag:hover { opacity: 0.8; }
