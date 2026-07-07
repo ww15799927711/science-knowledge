@@ -36,7 +36,7 @@ async function initTwikoo() {
     if (!window.twikoo) {
       await new Promise((resolve, reject) => {
         const script = document.createElement('script')
-        script.src = 'https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js'
+        script.src = 'https://cdn.jsdelivr.net/npm/twikoo@1.7.14/dist/twikoo.all.min.js'
         script.onload = resolve
         script.onerror = () => reject(new Error('twikoo CDN加载失败'))
         document.head.appendChild(script)
