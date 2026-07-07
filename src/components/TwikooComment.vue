@@ -3,21 +3,24 @@
     <h3 class="comment-title">💬 评论区</h3>
     <div id="twikoo-container"></div>
     <div v-if="!loaded" class="comment-loading">加载评论中...</div>
+    <div v-if="error && loaded" class="comment-retry">
+      <button @click="error = false; loaded = false; initTwikoo()">重试</button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { onMounted, watch, onBeforeUnmount, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import twikoo from 'twikoo'
 
 const route = useRoute()
 const loaded = ref(false)
+const error = ref(false)
 let twikooInstance = null
 
 const TIKOO_ENV = import.meta.env.VITE_TWIKOO_ENV || ''
 
-function initTwikoo() {
+async function initTwikoo() {
   if (!TIKOO_ENV) {
     const el = document.getElementById('twikoo-container')
     if (el) {
@@ -26,17 +29,34 @@ function initTwikoo() {
     }
     return
   }
+  // 延迟1秒加载，不阻塞页面渲染
+  await new Promise(resolve => setTimeout(resolve, 1000))
   try {
-    twikoo.init({
-      envId: TIKOO_ENV,
-      el: '#twikoo-container',
-      path: route.path,
-      lang: 'zh-CN'
+    const twikoo = (await import('twikoo')).default
+    // 10秒超时保护，防止Vercel后端连接过慢阻塞页面
+    const initPromise = new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error('Twikoo connection timeout')), 10000)
+      twikoo.init({
+        envId: TIKOO_ENV,
+        el: '#twikoo-container',
+        path: route.path,
+        lang: 'zh-CN',
+        onMounted: () => {
+          clearTimeout(timer)
+          resolve()
+        }
+      })
     })
+    await initPromise
     loaded.value = true
   } catch (e) {
-    console.error('Twikoo init failed:', e)
+    console.warn('Twikoo 加载超时或失败，评论功能暂不可用:', e)
+    error.value = true
     loaded.value = true
+    const el = document.getElementById('twikoo-container')
+    if (el) {
+      el.innerHTML = '<p style="text-align:center;color:var(--color-text-hint);padding:20px 0;">评论系统暂时无法加载，请稍后刷新页面重试。</p>'
+    }
   }
 }
 
@@ -78,6 +98,24 @@ onBeforeUnmount(() => {
   color: var(--color-text-hint);
   padding: 20px 0;
   font-size: calc(14px * var(--font-scale));
+}
+.comment-retry {
+  text-align: center;
+  padding: 12px 0;
+}
+.comment-retry button {
+  padding: 6px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-card);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: calc(13px * var(--font-scale));
+  transition: all 0.2s;
+}
+.comment-retry button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 /* Twikoo 样式覆盖 - 适配本站主题 */
