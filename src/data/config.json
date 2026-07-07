@@ -1,0 +1,177 @@
+{
+  "version": "1.0.1",
+  "minVersion": "1.0.0",
+  "knowledgeCount": 187,
+  "topicCount": 43,
+  "historyCount": 119,
+  "categories": [
+    {
+      "id": "物理",
+      "name": "物理",
+      "icon": "⚡",
+      "color": "#E74C3C"
+    },
+    {
+      "id": "化学",
+      "name": "化学",
+      "icon": "⚗️",
+      "color": "#1ABC9C"
+    },
+    {
+      "id": "生物",
+      "name": "生物",
+      "icon": "🧬",
+      "color": "#9B59B6"
+    },
+    {
+      "id": "地球科学",
+      "name": "地球科学",
+      "icon": "🌍",
+      "color": "#27AE60"
+    },
+    {
+      "id": "天文",
+      "name": "天文",
+      "icon": "🌌",
+      "color": "#3498DB"
+    },
+    {
+      "id": "材料与工程",
+      "name": "材料与工程",
+      "icon": "🔧",
+      "color": "#607D8B"
+    },
+    {
+      "id": "能源与动力",
+      "name": "能源与动力",
+      "icon": "🔥",
+      "color": "#E67E22"
+    },
+    {
+      "id": "信息与通信",
+      "name": "信息与通信",
+      "icon": "💻",
+      "color": "#4A90D9"
+    },
+    {
+      "id": "医学与健康",
+      "name": "医学与健康",
+      "icon": "🫀",
+      "color": "#E91E63"
+    },
+    {
+      "id": "食品与农业",
+      "name": "食品与农业",
+      "icon": "🌾",
+      "color": "#8BC34A"
+    },
+    {
+      "id": "建筑与交通",
+      "name": "建筑与交通",
+      "icon": "🏗️",
+      "color": "#795548"
+    }
+  ],
+  "topicSubcategories": [
+    {
+      "id": "日常解密",
+      "name": "日常解密",
+      "icon": "🏠",
+      "description": "生活中的科学谜题"
+    },
+    {
+      "id": "行为解密",
+      "name": "行为解密",
+      "icon": "🧠",
+      "description": "为什么我们会这样做"
+    },
+    {
+      "id": "生存系列",
+      "name": "生存系列",
+      "icon": "🏕️",
+      "description": "极端条件下的科学"
+    },
+    {
+      "id": "穿越系列",
+      "name": "穿越系列",
+      "icon": "🕰️",
+      "description": "假如时光可以倒流"
+    },
+    {
+      "id": "身体系列",
+      "name": "身体系列",
+      "icon": "🫁",
+      "description": "身体的奇妙反应"
+    },
+    {
+      "id": "极端环境",
+      "name": "极端环境",
+      "icon": "🌋",
+      "description": "极限条件下的物理法则"
+    }
+  ],
+  "historyPeriods": [
+    {
+      "id": "远古与古典",
+      "name": "远古与古典",
+      "theme": "观察与猜测",
+      "color": "#8D6E63"
+    },
+    {
+      "id": "中世纪与东方文明",
+      "name": "中世纪与东方文明",
+      "theme": "积累与传递",
+      "color": "#78909C"
+    },
+    {
+      "id": "科学革命",
+      "name": "科学革命",
+      "theme": "从思辨到实验",
+      "color": "#5C6BC0"
+    },
+    {
+      "id": "第一次工业革命",
+      "name": "第一次工业革命",
+      "theme": "机械化",
+      "color": "#8D6E63"
+    },
+    {
+      "id": "第二次工业革命",
+      "name": "第二次工业革命",
+      "theme": "电气化与规模化",
+      "color": "#FF8F00"
+    },
+    {
+      "id": "理论基础：相对论与量子力学",
+      "name": "理论基础：相对论与量子力学",
+      "theme": "重塑认知",
+      "color": "#512DA8"
+    },
+    {
+      "id": "第三次工业革命",
+      "name": "第三次工业革命",
+      "theme": "原子能、计算机与航天",
+      "color": "#1565C0"
+    },
+    {
+      "id": "信息时代",
+      "name": "信息时代",
+      "theme": "数字化与网络化",
+      "color": "#00838F"
+    },
+    {
+      "id": "第四次工业革命 / 工业4.0",
+      "name": "第四次工业革命 / 工业4.0",
+      "theme": "智能化与数字化融合",
+      "color": "#9C27B0"
+    }
+  ],
+  "featureFlags": {
+    "quiz": false,
+    "achievement": false,
+    "ranking": false
+  },
+  "announcement": "",
+  "lastUpdated": "2026-07-07T07:09:06.876Z",
+  "notice": ""
+}
