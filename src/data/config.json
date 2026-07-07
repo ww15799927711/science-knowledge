@@ -10,77 +10,88 @@
       "name": "物理",
       "icon": "⚡",
       "color": "#E74C3C",
-      "description": "探索物质与能量的规律"
+      "description": "探索物质与能量的规律",
+      "image": "/images/categories/物理.png"
     },
     {
       "id": "化学",
       "name": "化学",
       "icon": "⚗️",
       "color": "#1ABC9C",
-      "description": "分子与原子的奇妙变化"
+      "description": "分子与原子的奇妙变化",
+      "image": "/images/categories/化学.png"
     },
     {
       "id": "生物",
       "name": "生物",
       "icon": "🧬",
       "color": "#9B59B6",
-      "description": "生命的奥秘与演化"
+      "description": "生命的奥秘与演化",
+      "image": "/images/categories/生物.png"
     },
     {
       "id": "地球科学",
       "name": "地球科学",
       "icon": "🌍",
       "color": "#27AE60",
-      "description": "认识我们的星球"
+      "description": "认识我们的星球",
+      "image": "/images/categories/地球科学.png"
     },
     {
       "id": "天文",
       "name": "天文",
       "icon": "🌌",
       "color": "#3498DB",
-      "description": "仰望星空的无限可能"
+      "description": "仰望星空的无限可能",
+      "image": "/images/categories/天文.png"
     },
     {
       "id": "材料与工程",
       "name": "材料与工程",
       "icon": "🔧",
       "color": "#607D8B",
-      "description": "从石器到纳米科技"
+      "description": "从石器到纳米科技",
+      "image": "/images/categories/材料与工程.png"
     },
     {
       "id": "能源与动力",
       "name": "能源与动力",
       "icon": "🔥",
       "color": "#E67E22",
-      "description": "驱动世界运转的力量"
+      "description": "驱动世界运转的力量",
+      "image": "/images/categories/能源与动力.png"
     },
     {
       "id": "信息与通信",
       "name": "信息与通信",
       "icon": "💻",
       "color": "#4A90D9",
-      "description": "连接万物的技术纽带"
+      "description": "连接万物的技术纽带",
+      "image": "/images/categories/信息与通信.png"
     },
     {
       "id": "医学与健康",
       "name": "医学与健康",
       "icon": "🫀",
       "color": "#E91E63",
-      "description": "守护生命的科学"
+      "description": "守护生命的科学",
+      "image": "/images/categories/医学与健康.png"
     },
     {
       "id": "食品与农业",
       "name": "食品与农业",
       "icon": "🌾",
       "color": "#8BC34A",
-      "description": "从田间到餐桌的智慧"
+      "description": "从田间到餐桌的智慧",
+      "image": "/images/categories/食品与农业.png"
     },
     {
       "id": "建筑与交通",
       "name": "建筑与交通",
       "icon": "🏗️",
       "color": "#795548",
-      "description": "塑造人类栖居空间"
+      "description": "塑造人类栖居空间",
+      "image": "/images/categories/建筑与交通.png"
     }
   ],
   "topicSubcategories": [
@@ -89,42 +100,48 @@
       "name": "日常解密",
       "icon": "🏠",
       "color": "#FF7043",
-      "description": "生活中的科学谜题"
+      "description": "生活中的科学谜题",
+      "image": "/images/topics/日常解密.png"
     },
     {
       "id": "行为解密",
       "name": "行为解密",
       "icon": "🧠",
       "color": "#AB47BC",
-      "description": "为什么我们会这样做"
+      "description": "为什么我们会这样做",
+      "image": "/images/topics/行为解密.png"
     },
     {
       "id": "生存系列",
       "name": "生存系列",
       "icon": "🏕️",
       "color": "#2E7D32",
-      "description": "极端条件下的科学"
+      "description": "极端条件下的科学",
+      "image": "/images/topics/生存系列.png"
     },
     {
       "id": "穿越系列",
       "name": "穿越系列",
       "icon": "🕰️",
       "color": "#FF8F00",
-      "description": "假如时光可以倒流"
+      "description": "假如时光可以倒流",
+      "image": "/images/topics/穿越系列.png"
     },
     {
       "id": "身体系列",
       "name": "身体系列",
       "icon": "🫁",
       "color": "#EF5350",
-      "description": "身体的奇妙反应"
+      "description": "身体的奇妙反应",
+      "image": "/images/topics/身体系列.png"
     },
     {
       "id": "极端环境",
       "name": "极端环境",
       "icon": "🌋",
       "color": "#5C6BC0",
-      "description": "极限条件下的物理法则"
+      "description": "极限条件下的物理法则",
+      "image": "/images/topics/极端环境.png"
     }
   ],
   "historyPeriods": [
@@ -132,55 +149,64 @@
       "id": "远古与古典",
       "name": "远古与古典",
       "theme": "观察与猜测",
-      "color": "#8D6E63"
+      "color": "#8D6E63",
+      "image": "/images/history/远古与古典.png"
     },
     {
       "id": "中世纪与东方文明",
       "name": "中世纪与东方文明",
       "theme": "积累与传递",
-      "color": "#78909C"
+      "color": "#78909C",
+      "image": "/images/history/中世纪与东方文明.png"
     },
     {
       "id": "科学革命",
       "name": "科学革命",
       "theme": "从思辨到实验",
-      "color": "#5C6BC0"
+      "color": "#5C6BC0",
+      "image": "/images/history/科学革命.png"
     },
     {
       "id": "第一次工业革命",
       "name": "第一次工业革命",
       "theme": "机械化",
-      "color": "#8D6E63"
+      "color": "#8D6E63",
+      "image": "/images/history/第一次工业革命.png"
     },
     {
       "id": "第二次工业革命",
       "name": "第二次工业革命",
       "theme": "电气化与规模化",
-      "color": "#FF8F00"
+      "color": "#FF8F00",
+      "image": "/images/history/第二次工业革命.png"
     },
     {
       "id": "理论基础：相对论与量子力学",
       "name": "理论基础：相对论与量子力学",
       "theme": "重塑认知",
-      "color": "#512DA8"
+      "color": "#512DA8",
+      "image": "/images/history/理论基础：相对论与量子力学.png"
     },
     {
       "id": "第三次工业革命",
       "name": "第三次工业革命",
       "theme": "原子能、计算机与航天",
-      "color": "#1565C0"
+      "color": "#1565C0",
+      "image": "/images/history/第三次工业革命.png"
     },
     {
       "id": "信息时代",
       "name": "信息时代",
       "theme": "数字化与网络化",
-      "color": "#00838F"
+      "color": "#00838F",
+      "image": "/images/history/信息时代.png"
     },
     {
       "id": "第四次工业革命 / 工业4.0",
       "name": "第四次工业革命 / 工业4.0",
       "theme": "智能化与数字化融合",
-      "color": "#9C27B0"
+      "color": "#9C27B0",
+      "image": "/images/history/第四次工业革命_工业4.0.png"
     }
   ],
   "featureFlags": {
@@ -190,5 +216,31 @@
   },
   "announcement": "",
   "lastUpdated": "2026-07-07T08:33:33.713Z",
-  "notice": ""
+  "notice": "",
+  "carousel": [
+    {
+      "image": "/images/carousel/cosmos.png",
+      "title": "探索宇宙深处",
+      "subtitle": "从微观粒子到浩瀚星系，科学带你领略自然的壮美",
+      "link": "/knowledge/天文"
+    },
+    {
+      "image": "/images/carousel/earth.png",
+      "title": "生命的奇迹",
+      "subtitle": "从深海热泉到雨林树冠，每个角落都藏着科学的秘密",
+      "link": "/knowledge/生物"
+    },
+    {
+      "image": "/images/carousel/micro.png",
+      "title": "微观世界",
+      "subtitle": "DNA的双螺旋、分子的舞蹈——看不见的世界同样精彩",
+      "link": "/knowledge/化学"
+    },
+    {
+      "image": "/images/carousel/tech.png",
+      "title": "文明的脚步",
+      "subtitle": "从石器到芯片，人类用科学改变世界",
+      "link": "/history/科学革命"
+    }
+  ]
 }

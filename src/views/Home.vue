@@ -69,6 +69,11 @@
       </div>
     </div>
 
+    <!-- 图片轮播 -->
+    <div class="carousel-section" v-if="carouselSlides.length > 0">
+      <ImageCarousel :slides="carouselSlides" />
+    </div>
+
     <!-- 每日精选 -->
     <div class="daily-pick card" v-if="dailyPick">
       <div class="pick-accent"></div>
@@ -139,9 +144,11 @@
 <script setup>
 import { ref, reactive, computed, nextTick, watch } from 'vue'
 import { getDailyPick } from '@/utils/recommendation'
-import { getAllKnowledge, getAllTopics, getAllHistory, getCategories } from '@/utils/data'
+import { getAllKnowledge, getAllTopics, getAllHistory, getCategories, getCarousel } from '@/utils/data'
 import { searchAll } from '@/utils/search'
+import ImageCarousel from '@/components/ImageCarousel.vue'
 
+const carouselSlides = getCarousel()
 const dailyPick = getDailyPick()
 const knowledgeCount = getAllKnowledge().length
 const topicCount = getAllTopics().length
@@ -271,6 +278,9 @@ function getPickRoute() {
 .search-results .list { display: flex; flex-direction: column; gap: 1px; background: var(--color-divider); border-radius: var(--radius-card); overflow: hidden; }
 .search-results .list-item { text-decoration: none; color: var(--color-text); background: var(--color-card); padding: 14px 16px; }
 .search-results .list-item:hover { background: var(--color-bg); }
+
+/* 轮播区域 */
+.carousel-section { padding: 0 16px; margin-bottom: 20px; }
 
 /* 每日精选 */
 .daily-pick {

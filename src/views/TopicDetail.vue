@@ -1,5 +1,11 @@
 <template>
   <div v-if="item" class="page-enter">
+    <ImageHero
+      :image="subcategoryImage"
+      :title="item.title"
+      :badge="item.subcategory"
+      :subtitle="item.summary"
+    />
     <Breadcrumb
       sectionName="轻松话题"
       sectionLink="/topics"
@@ -25,6 +31,7 @@
     </div>
     <RefList title="相关知识" type="knowledge" :items="relatedKnowledge" />
     <RefList title="相关历史" type="history" :items="relatedHistory" />
+    <TwikooComment />
   </div>
   <div v-else class="empty-state">
     <div class="empty-icon">🔍</div>
@@ -35,15 +42,23 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { getTopicById } from '@/utils/data'
+import { getTopicById, getTopicSubcategories } from '@/utils/data'
 import { getRelatedItems } from '@/utils/cross-ref'
 import ContentBody from '@/components/ContentBody.vue'
 import RefList from '@/components/RefList.vue'
 import Breadcrumb from '@/components/Breadcrumb.vue'
+import ImageHero from '@/components/ImageHero.vue'
+import TwikooComment from '@/components/TwikooComment.vue'
 
 const route = useRoute()
 const subcategory = computed(() => route.params.subcategory)
 const item = computed(() => getTopicById(route.params.id))
+
+const subcategoryImage = computed(() => {
+  if (!item.value) return ''
+  const sub = getTopicSubcategories().find(s => s.name === item.value.subcategory || s.id === subcategory.value)
+  return sub ? sub.image || '' : ''
+})
 
 const relatedKnowledge = computed(() => item.value ? getRelatedItems(item.value.relatedKnowledge, 'knowledge') : [])
 const relatedHistory = computed(() => item.value ? getRelatedItems(item.value.relatedHistory, 'history') : [])

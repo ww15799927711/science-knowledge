@@ -1,5 +1,11 @@
 <template>
   <div v-if="item" class="page-enter">
+    <ImageHero
+      :image="periodImage"
+      :title="item.title"
+      :badge="item.period"
+      :subtitle="item.summary"
+    />
     <Breadcrumb
       sectionName="科学简史"
       sectionLink="/history"
@@ -35,6 +41,7 @@
     </div>
     <RefList title="相关知识" type="knowledge" :items="relatedKnowledge" />
     <RefList title="相关话题" type="topics" :items="relatedTopics" />
+    <TwikooComment />
   </div>
   <div v-else class="empty-state">
     <div class="empty-icon">🔍</div>
@@ -45,14 +52,22 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { getHistoryById } from '@/utils/data'
+import { getHistoryById, getHistoryPeriods } from '@/utils/data'
 import { getRelatedItems } from '@/utils/cross-ref'
 import ContentBody from '@/components/ContentBody.vue'
 import RefList from '@/components/RefList.vue'
 import Breadcrumb from '@/components/Breadcrumb.vue'
+import ImageHero from '@/components/ImageHero.vue'
+import TwikooComment from '@/components/TwikooComment.vue'
 
 const route = useRoute()
 const item = computed(() => getHistoryById(route.params.id))
+
+const periodImage = computed(() => {
+  if (!item.value) return ''
+  const p = getHistoryPeriods().find(p => p.name === item.value.period || p.id === item.value.period)
+  return p ? p.image || '' : ''
+})
 
 const relatedKnowledge = computed(() => item.value ? getRelatedItems(item.value.relatedKnowledge, 'knowledge') : [])
 const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.relatedTopics, 'topics') : [])

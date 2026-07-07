@@ -46,3 +46,4 @@ export function getConfig() { return configData }
 export function getCategories() { return configData.categories }
 export function getTopicSubcategories() { return configData.topicSubcategories }
 export function getHistoryPeriods() { return configData.historyPeriods }
+export function getCarousel() { return configData.carousel || [] }
