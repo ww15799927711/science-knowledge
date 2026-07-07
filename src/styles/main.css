@@ -73,8 +73,9 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
   font-size: calc(15px * var(--font-scale));
   color: var(--color-text);
-  background: var(--color-bg);
+  background: var(--color-bg) url('/星际航行.png') center/cover no-repeat fixed;
   line-height: 1.8;
+  min-height: 100vh;
 }
 
 a {
