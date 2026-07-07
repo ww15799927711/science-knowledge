@@ -32,9 +32,17 @@ async function initTwikoo() {
   // 延迟1秒加载，不阻塞页面渲染
   await new Promise(resolve => setTimeout(resolve, 1000))
   try {
-    // 使用CDN完整URL导入，绕过Vite对CJS模块的interop处理
-    const twikooModule = await import('https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js')
-    const twikoo = twikooModule.default || twikooModule
+    // 通过script tag加载twikoo，确保UMD bundle在全局环境中正确执行
+    if (!window.twikoo) {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = 'https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js'
+        script.onload = resolve
+        script.onerror = () => reject(new Error('twikoo CDN加载失败'))
+        document.head.appendChild(script)
+      })
+    }
+    const twikoo = window.twikoo
     if (typeof twikoo.init !== 'function') {
       throw new Error('twikoo.init 不存在')
     }
