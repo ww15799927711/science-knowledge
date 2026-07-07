@@ -31,9 +31,23 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   color: var(--color-text);
   border-left: 4px solid;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  text-align: center;
+  padding: 16px 12px;
 }
 .cat-card:hover { transform: translateY(-2px); }
 .cat-icon { font-size: 28px; margin-bottom: 8px; }
-.cat-name { font-weight: 600; font-size: 15px; }
+.cat-name {
+  font-weight: 600;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
 .cat-count { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
 </style>

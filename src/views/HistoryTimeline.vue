@@ -33,9 +33,29 @@ function getCount(name) {
   color: var(--color-text);
   border-top: 4px solid;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  padding: 16px 12px;
 }
 .period-card:hover { transform: translateY(-2px); }
-.period-name { font-weight: 600; font-size: 15px; }
-.period-theme { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
+.period-name {
+  font-weight: 600;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+.period-theme {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
 .period-count { font-size: 12px; color: var(--color-text-hint); margin-top: 4px; }
 </style>
