@@ -46,9 +46,9 @@ async function initTwikoo() {
     if (typeof twikoo.init !== 'function') {
       throw new Error('twikoo.init 不存在')
     }
-    // 30秒超时保护，Cloudflare Pages(海外)连接腾讯云开发(国内)延迟较大
+    // 60秒超时保护
     const initPromise = new Promise((resolve, reject) => {
-      const timer = setTimeout(() => reject(new Error('Twikoo connection timeout')), 30000)
+      const timer = setTimeout(() => reject(new Error('Twikoo connection timeout')), 60000)
       twikoo.init({
         envId: TIKOO_ENV,
         el: '#twikoo-container',
