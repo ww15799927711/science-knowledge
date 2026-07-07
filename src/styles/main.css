@@ -14,7 +14,7 @@
   --color-danger: #EF4444;
   --color-bg: #F5F5F0;
   --color-card: #FFFFFF;
-  --color-card-glass: rgba(255, 255, 255, 0.72);
+  --color-card-glass: rgba(255, 255, 255, 0.90);
   --color-text: #1F2937;
   --color-text-secondary: #6B7280;
   --color-text-hint: #9CA3AF;
@@ -44,7 +44,7 @@
 [data-theme="dark"] {
   --color-bg: #111827;
   --color-card: #1F2937;
-  --color-card-glass: rgba(31, 41, 55, 0.8);
+  --color-card-glass: rgba(31, 41, 55, 0.92);
   --color-text: #F3F4F6;
   --color-text-secondary: #9CA3AF;
   --color-text-hint: #6B7280;
@@ -61,7 +61,7 @@
 [data-theme="green"] {
   --color-bg: #F0F5E8;
   --color-card: #FAFFF5;
-  --color-card-glass: rgba(250, 255, 245, 0.75);
+  --color-card-glass: rgba(250, 255, 245, 0.90);
   --color-text: #2D3B1F;
   --color-text-secondary: #5F6B4F;
   --color-text-hint: #8B9578;
@@ -111,6 +111,7 @@ a:hover {
 
 /* --- 毛玻璃卡片 --- */
 .glass {
+  background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(16px) saturate(1.2);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);
@@ -217,7 +218,7 @@ a:hover {
   color: var(--color-text);
   margin-bottom: 10px;
   padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 8px;
@@ -321,7 +322,7 @@ a:hover {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
+  gap: 14px;
 }
 
 /* --- 列表项 --- */

@@ -51,6 +51,7 @@ const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
   text-decoration: none;
   color: var(--color-text);
   border-bottom: none;
+  background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

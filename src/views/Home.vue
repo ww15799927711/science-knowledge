@@ -261,6 +261,12 @@ function getPickRoute() {
 
 /* 搜索区域 */
 .search-section { padding: 0 16px; margin-bottom: 20px; }
+.search-section .search-bar {
+  background: var(--color-card-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 .search-results { margin-top: 8px; }
 .search-results .list { display: flex; flex-direction: column; gap: 1px; background: var(--color-divider); border-radius: var(--radius-card); overflow: hidden; }
 .search-results .list-item { text-decoration: none; color: var(--color-text); background: var(--color-card); padding: 14px 16px; }
@@ -273,15 +279,19 @@ function getPickRoute() {
   overflow: hidden;
   border: none;
   box-shadow: var(--shadow-md);
+  background: var(--color-card-glass);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 .pick-accent {
   position: absolute;
   top: 0;
   left: 0;
-  width: 4px;
+  width: 5px;
   height: 100%;
   background: linear-gradient(180deg, #3B82F6, #10B981);
-  border-radius: 4px 0 0 4px;
+  border-radius: 0 3px 3px 0;
 }
 .pick-header { margin-bottom: 10px; }
 .pick-title {

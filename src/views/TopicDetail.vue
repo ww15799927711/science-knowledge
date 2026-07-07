@@ -51,6 +51,7 @@ const relatedHistory = computed(() => item.value ? getRelatedItems(item.value.re
 
 <style scoped>
 .detail-card {
+  background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(16px) saturate(1.2);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);

@@ -40,6 +40,7 @@ function getCount(name) {
   justify-content: center;
   min-height: 150px;
   padding: 20px 12px;
+  background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(16px) saturate(1.2);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);

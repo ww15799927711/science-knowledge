@@ -38,6 +38,7 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   min-height: 140px;
   text-align: center;
   padding: 20px 12px;
+  background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(16px) saturate(1.2);
   -webkit-backdrop-filter: blur(16px) saturate(1.2);

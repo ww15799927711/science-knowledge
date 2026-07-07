@@ -32,6 +32,7 @@ defineProps({
   padding: 8px 14px;
   font-size: 13px;
   color: var(--color-text-hint);
+  background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(12px) saturate(1.2);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);

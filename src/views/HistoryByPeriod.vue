@@ -72,6 +72,7 @@ const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
 .timeline-card {
   text-decoration: none;
   color: var(--color-text);
+  background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
