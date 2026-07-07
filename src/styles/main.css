@@ -74,7 +74,7 @@ body {
   font-size: calc(15px * var(--font-scale));
   color: var(--color-text);
   background-color: var(--color-bg);
-  background-image: url('/星际航行.png');
+  background-image: url('/星际航行.jpg');
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;

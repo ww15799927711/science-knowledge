@@ -18,7 +18,7 @@ const { fontClass } = useTheme()
 <style>
 #app {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: transparent;
   color: var(--color-text);
 }
 .main-content {
