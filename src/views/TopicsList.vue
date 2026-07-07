@@ -72,13 +72,13 @@ function getCount(name) {
 }
 .sub-icon-wrap {
   position: absolute;
-  bottom: -16px;
+  bottom: 8px;
   left: 10px;
   width: 36px;
   height: 36px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--icon-color) 13%, transparent);
-  border: 2px solid var(--color-card);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;

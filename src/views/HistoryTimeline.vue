@@ -77,13 +77,13 @@ function getCount(name) {
 }
 .period-icon-wrap {
   position: absolute;
-  bottom: -14px;
+  bottom: 8px;
   left: 10px;
   width: 32px;
   height: 32px;
   border-radius: 8px;
   background: color-mix(in srgb, var(--icon-color) 13%, transparent);
-  border: 2px solid var(--color-card);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
