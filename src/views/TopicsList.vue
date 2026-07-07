@@ -9,8 +9,11 @@
         :to="'/topics/' + sub.id"
         class="sub-card"
       >
-        <div class="sub-icon-wrap" :style="{ '--icon-color': sub.color }">
-          <span class="sub-icon">{{ sub.icon }}</span>
+        <div class="sub-img-wrap">
+          <img v-if="sub.image" :src="sub.image" :alt="sub.name" class="sub-img" loading="lazy" />
+          <div class="sub-icon-wrap" :style="{ '--icon-color': sub.color }">
+            <span class="sub-icon">{{ sub.icon }}</span>
+          </div>
         </div>
         <div class="sub-name">{{ sub.name }}</div>
         <div class="sub-desc">{{ sub.description }}</div>
@@ -36,10 +39,6 @@ function getCount(name) {
   text-align: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 150px;
-  padding: 20px 12px;
   background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(16px) saturate(1.2);
@@ -48,31 +47,53 @@ function getCount(name) {
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
+  overflow: hidden;
 }
 .sub-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: rgba(16, 185, 129, 0.3);
 }
+.sub-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+}
+.sub-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-base);
+}
+.sub-card:hover .sub-img {
+  transform: scale(1.05);
+}
 .sub-icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  position: absolute;
+  bottom: -16px;
+  left: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   background: color-mix(in srgb, var(--icon-color) 13%, transparent);
+  border: 2px solid var(--color-card);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
   transition: background var(--transition-fast), transform var(--transition-base);
+  z-index: 1;
 }
 .sub-card:hover .sub-icon-wrap {
   background: color-mix(in srgb, var(--icon-color) 50%, transparent);
   transform: scale(1.1);
 }
-.sub-icon { font-size: 22px; }
+.sub-icon { font-size: 18px; }
 .sub-name {
   font-weight: 600;
   font-size: 14px;
+  padding: 20px 12px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -81,7 +102,7 @@ function getCount(name) {
 .sub-desc {
   font-size: 11px;
   color: var(--color-text-secondary);
-  margin-top: 4px;
+  padding: 4px 12px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -90,6 +111,6 @@ function getCount(name) {
 .sub-count {
   font-size: 12px;
   color: var(--color-text-hint);
-  margin-top: 4px;
+  padding: 0 12px 14px;
 }
 </style>

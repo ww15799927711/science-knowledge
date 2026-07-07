@@ -10,8 +10,11 @@
         class="period-card"
       >
         <div class="period-accent" :style="{ background: period.color }"></div>
-        <div class="period-icon-wrap" :style="{ '--icon-color': period.color }">
-          <span class="period-icon">{{ period.name.charAt(0) }}</span>
+        <div class="period-img-wrap">
+          <img v-if="period.image" :src="period.image" :alt="period.name" class="period-img" loading="lazy" />
+          <div class="period-icon-wrap" :style="{ '--icon-color': period.color }">
+            <span class="period-icon">{{ period.name.charAt(0) }}</span>
+          </div>
         </div>
         <div class="period-name">{{ period.name }}</div>
         <div class="period-theme">{{ period.theme }}</div>
@@ -36,9 +39,6 @@ function getCount(name) {
   color: var(--color-text);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 130px;
-  padding: 18px 14px;
   background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(16px) saturate(1.2);
@@ -57,21 +57,41 @@ function getCount(name) {
   right: 0;
   height: 3px;
   border-radius: var(--radius-card) var(--radius-card) 0 0;
+  z-index: 2;
+}
+.period-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+}
+.period-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-base);
+}
+.period-card:hover .period-img {
+  transform: scale(1.05);
 }
 .period-icon-wrap {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  position: absolute;
+  bottom: -14px;
+  left: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   background: color-mix(in srgb, var(--icon-color) 13%, transparent);
+  border: 2px solid var(--color-card);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 6px;
-  margin-bottom: 4px;
   transition: background var(--transition-fast), transform var(--transition-base);
+  z-index: 1;
 }
 .period-icon {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--icon-color);
   opacity: 0.7;
@@ -91,7 +111,7 @@ function getCount(name) {
 .period-name {
   font-weight: 700;
   font-size: 15px;
-  margin-top: 4px;
+  padding: 18px 14px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -100,7 +120,7 @@ function getCount(name) {
 .period-theme {
   font-size: 12px;
   color: var(--color-text-secondary);
-  margin-top: 6px;
+  padding: 6px 14px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -109,6 +129,6 @@ function getCount(name) {
 .period-count {
   font-size: 12px;
   color: var(--color-text-hint);
-  margin-top: 6px;
+  padding: 6px 14px 14px;
 }
 </style>

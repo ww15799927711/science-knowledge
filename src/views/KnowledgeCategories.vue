@@ -9,8 +9,11 @@
         :to="'/knowledge/' + cat.id"
         class="cat-card"
       >
-        <div class="cat-icon-wrap" :style="{ '--icon-color': cat.color }">
-          <span class="cat-icon">{{ cat.icon }}</span>
+        <div class="cat-img-wrap">
+          <img v-if="cat.image" :src="cat.image" :alt="cat.name" class="cat-img" loading="lazy" />
+          <div class="cat-icon-wrap" :style="{ '--icon-color': cat.color }">
+            <span class="cat-icon">{{ cat.icon }}</span>
+          </div>
         </div>
         <div class="cat-name">{{ cat.name }}</div>
         <div class="cat-desc" v-if="cat.description">{{ cat.description }}</div>
@@ -33,11 +36,7 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   color: var(--color-text);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 140px;
   text-align: center;
-  padding: 20px 12px;
   background: var(--color-card);
   background: var(--color-card-glass);
   backdrop-filter: blur(16px) saturate(1.2);
@@ -46,31 +45,53 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
+  overflow: hidden;
 }
 .cat-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: rgba(59, 130, 246, 0.3);
 }
+.cat-img-wrap {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+}
+.cat-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-base);
+}
+.cat-card:hover .cat-img {
+  transform: scale(1.05);
+}
 .cat-icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  position: absolute;
+  bottom: -16px;
+  left: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   background: color-mix(in srgb, var(--icon-color) 13%, transparent);
+  border: 2px solid var(--color-card);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
   transition: background var(--transition-fast), transform var(--transition-base);
+  z-index: 1;
 }
 .cat-card:hover .cat-icon-wrap {
   background: color-mix(in srgb, var(--icon-color) 50%, transparent);
   transform: scale(1.1);
 }
-.cat-icon { font-size: 22px; }
+.cat-icon { font-size: 18px; }
 .cat-name {
   font-weight: 600;
   font-size: 14px;
+  padding: 20px 12px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -79,12 +100,12 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
 .cat-count {
   font-size: 12px;
   color: var(--color-text-hint);
-  margin-top: 4px;
+  padding: 0 12px 14px;
 }
 .cat-desc {
   font-size: 11px;
   color: var(--color-text-secondary);
-  margin-top: 4px;
+  padding: 4px 12px 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
