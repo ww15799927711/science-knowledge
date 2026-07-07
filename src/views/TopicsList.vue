@@ -32,7 +32,7 @@ function getCount(name) {
   text-decoration: none;
   color: var(--color-text);
   text-align: center;
-  transition: transform 0.2s;
+  transition: all 0.25s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +40,10 @@ function getCount(name) {
   min-height: 140px;
   padding: 16px 12px;
 }
-.sub-card:hover { transform: translateY(-2px); }
+.sub-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+}
 .sub-icon { font-size: 28px; margin-bottom: 8px; }
 .sub-name {
   font-weight: 600;

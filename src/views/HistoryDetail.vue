@@ -1,8 +1,12 @@
 <template>
   <div v-if="item">
-    <div style="margin-bottom: 16px;">
-      <router-link :to="'/history/' + item.period" class="back-link">← 返回列表</router-link>
-    </div>
+    <Breadcrumb
+      sectionName="科学简史"
+      sectionLink="/history"
+      :subName="item.period"
+      :subLink="'/history/' + item.period"
+      :title="item.title"
+    />
     <div class="card">
       <div style="display: flex; gap: 8px; margin-bottom: 8px;">
         <span class="badge badge-warning">{{ item.period }}</span>
@@ -45,6 +49,7 @@ import { getHistoryById } from '@/utils/data'
 import { getRelatedItems } from '@/utils/cross-ref'
 import ContentBody from '@/components/ContentBody.vue'
 import RefList from '@/components/RefList.vue'
+import Breadcrumb from '@/components/Breadcrumb.vue'
 
 const route = useRoute()
 const item = computed(() => getHistoryById(route.params.id))
@@ -54,7 +59,6 @@ const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.rel
 </script>
 
 <style scoped>
-.back-link { color: var(--color-primary); font-size: 14px; text-decoration: none; }
 .info-box {
   background: var(--color-bg);
   border-radius: var(--radius-badge);

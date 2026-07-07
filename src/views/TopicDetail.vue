@@ -1,8 +1,12 @@
 <template>
   <div v-if="item">
-    <div style="margin-bottom: 16px;">
-      <router-link :to="'/topics/' + subcategory" class="back-link">← 返回列表</router-link>
-    </div>
+    <Breadcrumb
+      sectionName="轻松话题"
+      sectionLink="/topics"
+      :subName="item.subcategory"
+      :subLink="'/topics/' + subcategory"
+      :title="item.title"
+    />
     <div class="card">
       <div style="display: flex; gap: 8px; margin-bottom: 8px;">
         <span class="badge badge-accent">{{ item.subcategory }}</span>
@@ -35,6 +39,7 @@ import { getTopicById } from '@/utils/data'
 import { getRelatedItems } from '@/utils/cross-ref'
 import ContentBody from '@/components/ContentBody.vue'
 import RefList from '@/components/RefList.vue'
+import Breadcrumb from '@/components/Breadcrumb.vue'
 
 const route = useRoute()
 const subcategory = computed(() => route.params.subcategory)
@@ -45,7 +50,6 @@ const relatedHistory = computed(() => item.value ? getRelatedItems(item.value.re
 </script>
 
 <style scoped>
-.back-link { color: var(--color-primary); font-size: 14px; text-decoration: none; }
 .fun-fact-box {
   background: var(--color-accent-light);
   border-left: 3px solid var(--color-accent);

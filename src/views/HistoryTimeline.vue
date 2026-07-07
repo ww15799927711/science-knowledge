@@ -32,14 +32,17 @@ function getCount(name) {
   text-decoration: none;
   color: var(--color-text);
   border-top: 4px solid;
-  transition: transform 0.2s;
+  transition: all 0.25s ease;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-height: 120px;
   padding: 16px 12px;
 }
-.period-card:hover { transform: translateY(-2px); }
+.period-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+}
 .period-name {
   font-weight: 600;
   font-size: 14px;

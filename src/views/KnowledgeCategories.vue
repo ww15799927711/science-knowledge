@@ -12,6 +12,7 @@
       >
         <div class="cat-icon">{{ cat.icon }}</div>
         <div class="cat-name">{{ cat.name }}</div>
+        <div class="cat-desc" v-if="cat.description">{{ cat.description }}</div>
         <div class="cat-count">{{ getCount(cat.id) }} 条</div>
       </router-link>
     </div>
@@ -30,7 +31,7 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   text-decoration: none;
   color: var(--color-text);
   border-left: 4px solid;
-  transition: transform 0.2s;
+  transition: all 0.25s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -39,7 +40,10 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   text-align: center;
   padding: 16px 12px;
 }
-.cat-card:hover { transform: translateY(-2px); }
+.cat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+}
 .cat-icon { font-size: 28px; margin-bottom: 8px; }
 .cat-name {
   font-weight: 600;
@@ -50,4 +54,13 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   max-width: 100%;
 }
 .cat-count { font-size: 12px; color: var(--color-text-secondary); margin-top: 4px; }
+.cat-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
 </style>

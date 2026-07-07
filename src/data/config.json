@@ -9,67 +9,78 @@
       "id": "物理",
       "name": "物理",
       "icon": "⚡",
-      "color": "#E74C3C"
+      "color": "#E74C3C",
+      "description": "探索物质与能量的规律"
     },
     {
       "id": "化学",
       "name": "化学",
       "icon": "⚗️",
-      "color": "#1ABC9C"
+      "color": "#1ABC9C",
+      "description": "分子与原子的奇妙变化"
     },
     {
       "id": "生物",
       "name": "生物",
       "icon": "🧬",
-      "color": "#9B59B6"
+      "color": "#9B59B6",
+      "description": "生命的奥秘与演化"
     },
     {
       "id": "地球科学",
       "name": "地球科学",
       "icon": "🌍",
-      "color": "#27AE60"
+      "color": "#27AE60",
+      "description": "认识我们的星球"
     },
     {
       "id": "天文",
       "name": "天文",
       "icon": "🌌",
-      "color": "#3498DB"
+      "color": "#3498DB",
+      "description": "仰望星空的无限可能"
     },
     {
       "id": "材料与工程",
       "name": "材料与工程",
       "icon": "🔧",
-      "color": "#607D8B"
+      "color": "#607D8B",
+      "description": "从石器到纳米科技"
     },
     {
       "id": "能源与动力",
       "name": "能源与动力",
       "icon": "🔥",
-      "color": "#E67E22"
+      "color": "#E67E22",
+      "description": "驱动世界运转的力量"
     },
     {
       "id": "信息与通信",
       "name": "信息与通信",
       "icon": "💻",
-      "color": "#4A90D9"
+      "color": "#4A90D9",
+      "description": "连接万物的技术纽带"
     },
     {
       "id": "医学与健康",
       "name": "医学与健康",
       "icon": "🫀",
-      "color": "#E91E63"
+      "color": "#E91E63",
+      "description": "守护生命的科学"
     },
     {
       "id": "食品与农业",
       "name": "食品与农业",
       "icon": "🌾",
-      "color": "#8BC34A"
+      "color": "#8BC34A",
+      "description": "从田间到餐桌的智慧"
     },
     {
       "id": "建筑与交通",
       "name": "建筑与交通",
       "icon": "🏗️",
-      "color": "#795548"
+      "color": "#795548",
+      "description": "塑造人类栖居空间"
     }
   ],
   "topicSubcategories": [

@@ -6,7 +6,7 @@
     <h1 class="section-title">{{ periodName }}</h1>
     <p class="section-subtitle">共 {{ items.length }} 个事件</p>
     <div class="timeline">
-      <div v-for="item in items" :key="item.entryId" class="timeline-item">
+      <div v-for="item in visibleItems" :key="item.entryId" class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-content">
           <router-link
@@ -23,11 +23,14 @@
         </div>
       </div>
     </div>
+    <div v-if="visibleItems.length < items.length" class="load-more-wrap">
+      <button class="btn btn-outline load-more-btn" @click="visibleCount += 10">加载更多 ({{ items.length - visibleItems.length }} 条)</button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getHistoryByPeriod, getHistoryPeriods } from '@/utils/data'
 
@@ -38,6 +41,8 @@ const periodName = computed(() => {
   return p ? p.name : '全部时期'
 })
 const items = computed(() => getHistoryByPeriod(period.value).sort((a, b) => a.yearSort - b.yearSort))
+const visibleCount = ref(10)
+const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
 </script>
 
 <style scoped>
@@ -64,4 +69,6 @@ const items = computed(() => getHistoryByPeriod(period.value).sort((a, b) => a.y
 }
 .timeline-content { margin-left: 8px; }
 .list-item { text-decoration: none; color: var(--color-text); background: var(--color-card); box-shadow: var(--shadow-card); padding: 14px 16px; }
+.load-more-wrap { text-align: center; margin-top: 16px; }
+.load-more-btn { min-width: 180px; }
 </style>

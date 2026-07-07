@@ -76,36 +76,41 @@
       <router-link :to="getPickRoute()" class="pick-link">阅读全文 →</router-link>
     </div>
 
-    <div class="section-title" style="margin-top: 24px;">探索板块</div>
-    <div class="board-grid">
-      <router-link to="/knowledge" class="board-card">
-        <div class="board-icon">⚛️</div>
-        <div class="board-name">知识点</div>
-        <div class="board-count">{{ knowledgeCount }} 条</div>
-      </router-link>
-      <router-link to="/topics" class="board-card">
-        <div class="board-icon">💡</div>
-        <div class="board-name">轻松话题</div>
-        <div class="board-count">{{ topicCount }} 条</div>
-      </router-link>
-      <router-link to="/history" class="board-card">
-        <div class="board-icon">📜</div>
-        <div class="board-name">科学简史</div>
-        <div class="board-count">{{ historyCount }} 条</div>
-      </router-link>
-    </div>
-
-    <div class="section-title" style="margin-top: 24px;">热门分类</div>
-    <div class="category-tags">
-      <router-link
-        v-for="cat in categories"
-        :key="cat.id"
-        :to="'/knowledge/' + cat.id"
-        class="cat-tag"
-        :style="{ borderColor: cat.color }"
-      >
-        {{ cat.icon }} {{ cat.name }}
-      </router-link>
+    <div class="tab-section" style="margin-top: 24px;">
+      <div class="tab-bar">
+        <button :class="['tab-btn', activeTab === 'explore' ? 'active' : '']" @click="activeTab = 'explore'">探索板块</button>
+        <button :class="['tab-btn', activeTab === 'categories' ? 'active' : '']" @click="activeTab = 'categories'">热门分类</button>
+      </div>
+      <div class="tab-content">
+        <div v-if="activeTab === 'explore'" class="board-grid">
+          <router-link to="/knowledge" class="board-card">
+            <div class="board-icon">⚛️</div>
+            <div class="board-name">知识点</div>
+            <div class="board-count">{{ knowledgeCount }} 条</div>
+          </router-link>
+          <router-link to="/topics" class="board-card">
+            <div class="board-icon">💡</div>
+            <div class="board-name">轻松话题</div>
+            <div class="board-count">{{ topicCount }} 条</div>
+          </router-link>
+          <router-link to="/history" class="board-card">
+            <div class="board-icon">📜</div>
+            <div class="board-name">科学简史</div>
+            <div class="board-count">{{ historyCount }} 条</div>
+          </router-link>
+        </div>
+        <div v-if="activeTab === 'categories'" class="category-tags">
+          <router-link
+            v-for="cat in categories"
+            :key="cat.id"
+            :to="'/knowledge/' + cat.id"
+            class="cat-tag"
+            :style="{ borderColor: cat.color }"
+          >
+            {{ cat.icon }} {{ cat.name }}
+          </router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -121,6 +126,7 @@ const knowledgeCount = getAllKnowledge().length
 const topicCount = getAllTopics().length
 const historyCount = getAllHistory().length
 const categories = getCategories()
+const activeTab = ref('explore')
 
 // 搜索
 const keyword = ref('')
@@ -209,9 +215,12 @@ function getPickRoute() {
   text-align: center;
   text-decoration: none;
   color: var(--color-text);
-  transition: transform 0.2s;
+  transition: all 0.25s ease;
 }
-.board-card:hover { transform: translateY(-2px); }
+.board-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25);
+}
 .board-icon { font-size: 32px; margin-bottom: 8px; }
 .board-name { font-weight: 600; font-size: 15px; }
 .board-count { font-size: 13px; color: var(--color-text-secondary); margin-top: 4px; }
@@ -233,7 +242,41 @@ function getPickRoute() {
   -webkit-backdrop-filter: blur(6px);
   transition: all 0.2s;
 }
-.cat-tag:hover { opacity: 0.8; }
+.cat-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+/* Tab 切换 */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--color-divider);
+  margin-bottom: 16px;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+.tab-btn:hover:not(.active) {
+  color: var(--color-text);
+}
+.tab-content {
+  min-height: 120px;
+}
 
 @media (max-width: 600px) {
   .board-grid { grid-template-columns: 1fr; }
