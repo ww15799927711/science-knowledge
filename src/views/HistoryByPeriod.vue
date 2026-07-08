@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getHistoryByPeriod, getHistoryPeriods } from '@/utils/data'
 import Breadcrumb from '@/components/Breadcrumb.vue'
@@ -41,9 +41,18 @@ const periodName = computed(() => {
   const p = getHistoryPeriods().find(p => p.id === period.value)
   return p ? p.name : '全部时期'
 })
-const items = computed(() => getHistoryByPeriod(period.value).sort((a, b) => a.yearSort - b.yearSort))
+const items = ref([])
 const visibleCount = ref(10)
 const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
+
+async function loadData() {
+  const data = await getHistoryByPeriod(period.value)
+  items.value = data.sort((a, b) => a.yearSort - b.yearSort)
+}
+
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <style scoped>
@@ -88,7 +97,7 @@ const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
   box-shadow: var(--shadow-md);
 }
 .timeline-meta {
-  font-size: 12px;
+  font-size: calc(0.75rem * var(--font-scale));
   color: var(--color-text-hint);
   margin-bottom: 4px;
 }

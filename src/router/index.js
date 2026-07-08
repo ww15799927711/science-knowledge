@@ -14,6 +14,7 @@ const routes = [
   { path: '/history/:period', name: 'HistoryByPeriod', component: () => import('../views/HistoryByPeriod.vue') },
   { path: '/history/:period/:id', name: 'HistoryDetail', component: () => import('../views/HistoryDetail.vue') },
   { path: '/settings', name: 'Settings', component: () => import('../views/Settings.vue') },
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/NotFound.vue') },
 ]
 
 const router = createRouter({

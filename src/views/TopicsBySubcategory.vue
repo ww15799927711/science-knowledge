@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getTopicsBySubcategory, getTopicSubcategories } from '@/utils/data'
 import Breadcrumb from '@/components/Breadcrumb.vue'
@@ -40,9 +40,17 @@ const subName = computed(() => {
   const sub = getTopicSubcategories().find(s => s.id === subcategory.value)
   return sub ? sub.name : '全部话题'
 })
-const items = computed(() => getTopicsBySubcategory(subcategory.value))
+const items = ref([])
 const visibleCount = ref(10)
 const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
+
+async function loadData() {
+  items.value = await getTopicsBySubcategory(subcategory.value)
+}
+
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <style scoped>

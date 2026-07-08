@@ -24,12 +24,23 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { getTopicSubcategories, getAllTopics } from '@/utils/data'
 
 const subcategories = getTopicSubcategories()
+const allTopics = ref([])
+
 function getCount(name) {
-  return getAllTopics().filter(t => t.subcategory === name).length
+  return allTopics.value.filter(t => t.subcategory === name).length
 }
+
+async function loadData() {
+  allTopics.value = await getAllTopics()
+}
+
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <style scoped>
@@ -89,10 +100,10 @@ function getCount(name) {
   background: color-mix(in srgb, var(--icon-color) 50%, transparent);
   transform: scale(1.1);
 }
-.sub-icon { font-size: 18px; }
+.sub-icon { font-size: calc(1.125rem * var(--font-scale)); }
 .sub-name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
   padding: 20px 12px 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -100,7 +111,7 @@ function getCount(name) {
   max-width: 100%;
 }
 .sub-desc {
-  font-size: 11px;
+  font-size: calc(0.6875rem * var(--font-scale));
   color: var(--color-text-secondary);
   padding: 4px 12px 0;
   overflow: hidden;
@@ -109,7 +120,7 @@ function getCount(name) {
   max-width: 100%;
 }
 .sub-count {
-  font-size: 12px;
+  font-size: calc(0.75rem * var(--font-scale));
   color: var(--color-text-hint);
   padding: 0 12px 14px;
 }

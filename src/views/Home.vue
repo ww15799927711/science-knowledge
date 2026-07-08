@@ -1,5 +1,5 @@
 <template>
-  <div class="home page-enter">
+  <div class="home-page page-enter">
     <!-- Hero -->
     <div class="hero">
       <div class="hero-badge">🔬 科普知识平台</div>
@@ -11,11 +11,11 @@
     <div class="search-section">
       <div class="search-bar">
         <span class="search-icon">🔍</span>
-        <input v-model="keyword" placeholder="搜索知识点、话题、历史事件..." @input="doSearch" />
+        <input v-model="keyword" placeholder="搜索智慧结晶、话题、历史事件..." @input="debouncedSearch" />
       </div>
       <div v-if="searched" class="search-results">
         <div v-if="results.knowledge.length > 0">
-          <div class="section-subtitle" style="margin-top: 12px;">知识点 ({{ results.knowledge.length }})</div>
+          <div class="section-subtitle" style="margin-top: 12px;">智慧结晶 ({{ results.knowledge.length }})</div>
           <div class="list">
             <router-link
               v-for="r in results.knowledge"
@@ -85,127 +85,271 @@
       <router-link :to="getPickRoute()" class="pick-link">阅读全文 <span class="pick-arrow">→</span></router-link>
     </div>
 
-    <!-- Tab 切换区域 -->
+    <!-- 三栏 Tab 切换：知识点 / 轻松话题 / 科学简史 -->
     <div class="tab-section">
       <div class="tab-bar">
-        <button :class="['tab-btn', activeTab === 'explore' ? 'active' : '']" @click="activeTab = 'explore'">
-          <span class="tab-icon"></span>
-          <span>探索板块</span>
+        <button :class="['tab-btn', activeTab === 'knowledge' ? 'active' : '']" @click="activeTab = 'knowledge'">
+          <span class="tab-icon">⚛️</span>
+          <span>智慧结晶</span>
         </button>
-        <button :class="['tab-btn', activeTab === 'categories' ? 'active' : '']" @click="activeTab = 'categories'">
-          <span class="tab-icon">🏷️</span>
-          <span>热门分类</span>
+        <button :class="['tab-btn', activeTab === 'topics' ? 'active' : '']" @click="activeTab = 'topics'">
+          <span class="tab-icon">💡</span>
+          <span>轻松话题</span>
         </button>
-        <div class="tab-indicator" :style="indicatorStyle"></div>
+        <button :class="['tab-btn', activeTab === 'history' ? 'active' : '']" @click="activeTab = 'history'">
+          <span class="tab-icon">📜</span>
+          <span>科学简史</span>
+        </button>
       </div>
+
       <div class="tab-content">
-        <!-- 探索板块 -->
-        <div v-if="activeTab === 'explore'" class="board-grid">
-          <router-link to="/knowledge" class="board-card board-knowledge">
-            <div class="board-icon-wrap">
-              <span class="board-icon">⚛️</span>
-            </div>
-            <div class="board-name">知识点</div>
-            <div class="board-count">{{ knowledgeCount }} 条知识</div>
-          </router-link>
-          <router-link to="/topics" class="board-card board-topics">
-            <div class="board-icon-wrap">
-              <span class="board-icon">💡</span>
-            </div>
-            <div class="board-name">轻松话题</div>
-            <div class="board-count">{{ topicCount }} 条话题</div>
-          </router-link>
-          <router-link to="/history" class="board-card board-history">
-            <div class="board-icon-wrap">
-              <span class="board-icon">📜</span>
-            </div>
-            <div class="board-name">科学简史</div>
-            <div class="board-count">{{ historyCount }} 条事件</div>
-          </router-link>
-        </div>
-        <!-- 热门分类 -->
-        <div v-if="activeTab === 'categories'" class="category-tags">
+        <!-- 知识点：4列网格 -->
+        <div v-if="activeTab === 'knowledge'" class="knowledge-grid">
           <router-link
-            v-for="cat in categories"
-            :key="cat.id"
-            :to="'/knowledge/' + cat.id"
-            class="cat-tag"
-            :style="{ '--tag-color': cat.color }"
+            v-for="kp in knowledgePreview"
+            :key="'kp' + kp.kpId"
+            :to="'/knowledge/' + kp.category + '/' + kp.kpId"
+            class="kp-card"
           >
-            <span class="cat-tag-icon">{{ cat.icon }}</span>
-            <span class="cat-tag-name">{{ cat.name }}</span>
+            <div class="kp-card-accent" :style="{ background: getCategoryColor(kp.category) }"></div>
+            <div class="kp-card-body">
+              <div class="kp-card-tag" :style="{ color: getCategoryColor(kp.category) }">
+                <span>{{ getCategoryIcon(kp.category) }}</span>
+                <span>{{ kp.category }}</span>
+              </div>
+              <div class="kp-card-title">{{ kp.title }}</div>
+              <div class="kp-card-summary">{{ kp.summary }}</div>
+            </div>
           </router-link>
         </div>
+
+        <!-- 轻松话题：3列网格 -->
+        <div v-if="activeTab === 'topics'" class="topics-grid">
+          <router-link
+            v-for="topic in topicsPreview"
+            :key="'tp' + topic.topicId"
+            :to="'/topics/' + topic.subcategory + '/' + topic.topicId"
+            class="topic-card"
+          >
+            <div class="topic-card-accent" :style="{ background: getSubcategoryColor(topic.subcategory) }"></div>
+            <div class="topic-card-body">
+              <div class="topic-card-tag" :style="{ color: getSubcategoryColor(topic.subcategory) }">
+                <span>{{ getSubcategoryIcon(topic.subcategory) }}</span>
+                <span>{{ topic.subcategory }}</span>
+              </div>
+              <div class="topic-card-title">{{ topic.title }}</div>
+              <div class="topic-card-summary">{{ topic.summary }}</div>
+            </div>
+          </router-link>
+        </div>
+
+        <!-- 科学简史：水平滚动时间线 -->
+        <div v-if="activeTab === 'history'" class="history-scroll">
+          <div class="history-track">
+            <router-link
+              v-for="h in historyPreview"
+              :key="'ht' + h.entryId"
+              :to="'/history/' + h.period + '/' + h.entryId"
+              class="history-card"
+            >
+              <div class="history-year">{{ h.year }}</div>
+              <div class="history-accent" :style="{ background: getPeriodColor(h.period) }"></div>
+              <div class="history-title">{{ h.title }}</div>
+              <div class="history-summary">{{ h.summary }}</div>
+            </router-link>
+          </div>
+        </div>
+      </div>
+
+      <!-- 查看更多 -->
+      <div class="tab-footer">
+        <router-link :to="tabTargetRoute" class="view-more">查看更多 →</router-link>
+      </div>
+    </div>
+
+    <!-- 全站热门 -->
+    <div class="featured-section">
+      <div class="section-header">
+        <h2 class="section-title"><span>🔥</span> 全站热门</h2>
+      </div>
+      <div class="featured-grid">
+        <router-link
+          v-for="item in featuredItems"
+          :key="item.type + item.id"
+          :to="getFeaturedRoute(item)"
+          class="featured-card"
+          :style="{ '--cat-color': item.typeColor }"
+        >
+          <div class="featured-badge" :style="{ background: item.typeColor }">{{ item.typeLabel }}</div>
+          <div class="featured-title">{{ item.title }}</div>
+          <div class="featured-summary">{{ item.summary }}</div>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed, nextTick, watch } from 'vue'
+import { ref, reactive, computed, onUnmounted, onMounted } from 'vue'
 import { getDailyPick } from '@/utils/recommendation'
-import { getAllKnowledge, getAllTopics, getAllHistory, getCategories, getCarousel } from '@/utils/data'
+import { getCategories, getTopicSubcategories, getHistoryPeriods, getCarousel, getKnowledgeCount, getTopicCount, getHistoryCount } from '@/utils/data'
 import { searchAll } from '@/utils/search'
 import ImageCarousel from '@/components/ImageCarousel.vue'
 
 const carouselSlides = getCarousel()
-const dailyPick = getDailyPick()
-const knowledgeCount = getAllKnowledge().length
-const topicCount = getAllTopics().length
-const historyCount = getAllHistory().length
-const totalCount = knowledgeCount + topicCount + historyCount
+const dailyPick = ref(null)
+const allKnowledge = ref([])
+const allTopics = ref([])
+const allHistory = ref([])
+const totalCount = computed(() => getKnowledgeCount() + getTopicCount() + getHistoryCount())
 const categories = getCategories()
-const activeTab = ref('explore')
+const topicSubcats = getTopicSubcategories()
+const historyPeriods = getHistoryPeriods()
 
-// Tab 滑动指示器
-const indicatorStyle = ref({ left: '0px', width: '0px' })
-function updateIndicator() {
-  nextTick(() => {
-    const btns = document.querySelectorAll('.tab-btn')
-    const active = btns[activeTab.value === 'explore' ? 0 : 1]
-    if (active) {
-      indicatorStyle.value = {
-        left: active.offsetLeft + 'px',
-        width: active.offsetWidth + 'px'
-      }
-    }
-  })
+async function loadData() {
+  const [pick, knowledge, topics, history] = await Promise.all([
+    getDailyPick(),
+    import('@/data/knowledge.json'),
+    import('@/data/topics.json'),
+    import('@/data/history.json')
+  ])
+  dailyPick.value = pick
+  allKnowledge.value = knowledge.default
+  allTopics.value = topics.default
+  allHistory.value = history.default
 }
-watch(activeTab, updateIndicator)
-// 初始化
-setTimeout(updateIndicator, 100)
 
-// 搜索
+onMounted(() => {
+  loadData()
+})
+
+function getCategoryColor(cat) {
+  const c = categories.find(x => x.name === cat || x.id === cat)
+  return c ? c.color : '#3B82F6'
+}
+function getCategoryIcon(cat) {
+  const c = categories.find(x => x.name === cat || x.id === cat)
+  return c ? c.icon : '📖'
+}
+function getSubcategoryColor(sub) {
+  const s = topicSubcats.find(x => x.name === sub || x.id === sub)
+  return s ? s.color : '#FF7043'
+}
+function getSubcategoryIcon(sub) {
+  const s = topicSubcats.find(x => x.name === sub || x.id === sub)
+  return s ? s.icon : '💡'
+}
+function getPeriodColor(period) {
+  const p = historyPeriods.find(x => x.name === period || x.id === period)
+  return p ? p.color : '#5C6BC0'
+}
+function getFeaturedRoute(item) {
+  if (item.type === 'knowledge') return '/knowledge/' + item.category + '/' + item.id
+  if (item.type === 'topics') return '/topics/' + item.subcategory + '/' + item.id
+  if (item.type === 'history') return '/history/' + item.period + '/' + item.id
+  return '/'
+}
+
+const knowledgePreview = computed(() => {
+  const data = allKnowledge.value
+  const step = Math.max(1, Math.floor(data.length / 8))
+  const result = []
+  for (let i = 0; i < data.length && result.length < 8; i += step) {
+    result.push(data[i])
+  }
+  return result
+})
+
+const topicsPreview = computed(() => allTopics.value.slice(0, 6))
+
+const historyPreview = computed(() => {
+  const data = allHistory.value
+  const step = Math.max(1, Math.floor(data.length / 6))
+  const result = []
+  for (let i = 0; i < data.length && result.length < 6; i += step) {
+    result.push(data[i])
+  }
+  return result
+})
+
+const featuredItems = computed(() => {
+  const items = []
+  const kStep = Math.max(1, Math.floor(allKnowledge.value.length / 2))
+  for (let i = 0; i < 2 && i * kStep < allKnowledge.value.length; i++) {
+    const kp = allKnowledge.value[i * kStep]
+    items.push({
+      type: 'knowledge', id: kp.kpId, title: kp.title, summary: kp.summary,
+      category: kp.category, typeLabel: '知识', typeColor: getCategoryColor(kp.category)
+    })
+  }
+  for (let i = 0; i < 2 && i < allTopics.value.length; i++) {
+    const t = allTopics.value[i]
+    const sub = topicSubcats.find(s => s.name === t.subcategory || s.id === t.subcategory)
+    items.push({
+      type: 'topics', id: t.topicId, title: t.title, summary: t.summary,
+      subcategory: t.subcategory, typeLabel: '话题', typeColor: sub ? sub.color : '#FF7043'
+    })
+  }
+  const hStep = Math.max(1, Math.floor(allHistory.value.length / 2))
+  for (let i = 0; i < 2 && i * hStep < allHistory.value.length; i++) {
+    const h = allHistory.value[i * hStep]
+    items.push({
+      type: 'history', id: h.entryId, title: h.title, summary: h.summary,
+      period: h.period, typeLabel: '简史', typeColor: getPeriodColor(h.period)
+    })
+  }
+  return items
+})
+
+const activeTab = ref('knowledge')
+const tabTargetRoute = computed(() => {
+  const map = { knowledge: '/knowledge', topics: '/topics', history: '/history' }
+  return map[activeTab.value] || '/knowledge'
+})
+
 const keyword = ref('')
 const searched = ref(false)
 const results = reactive({ knowledge: [], topics: [], history: [] })
+let searchTimer = null
 
-function doSearch() {
+async function doSearch() {
   if (!keyword.value.trim()) {
     searched.value = false
+    results.knowledge = []
+    results.topics = []
+    results.history = []
     return
   }
   searched.value = true
-  const r = searchAll(keyword.value)
+  const r = await searchAll(keyword.value)
   results.knowledge = r.knowledge
   results.topics = r.topics
   results.history = r.history
 }
 
+function debouncedSearch() {
+  if (searchTimer) clearTimeout(searchTimer)
+  searchTimer = setTimeout(doSearch, 300)
+}
+
+onUnmounted(() => {
+  if (searchTimer) clearTimeout(searchTimer)
+})
+
 function getPickRoute() {
-  if (!dailyPick) return '/'
-  const type = dailyPick.type
-  const id = dailyPick.id
+  if (!dailyPick.value) return '/'
+  const type = dailyPick.value.type
+  const id = dailyPick.value.id
   if (type === 'knowledge') {
-    const kp = getAllKnowledge().find(k => k.kpId === id)
+    const kp = allKnowledge.value.find(k => k.kpId === id)
     return '/knowledge/' + (kp ? kp.category : 'all') + '/' + id
   }
   if (type === 'topics') {
-    const t = getAllTopics().find(t => t.topicId === id)
+    const t = allTopics.value.find(t => t.topicId === id)
     return '/topics/' + (t ? t.subcategory : 'all') + '/' + id
   }
   if (type === 'history') {
-    const h = getAllHistory().find(h => h.entryId === id)
+    const h = allHistory.value.find(h => h.entryId === id)
     return '/history/' + (h ? h.period : 'all') + '/' + id
   }
   return '/'
@@ -213,9 +357,8 @@ function getPickRoute() {
 </script>
 
 <style scoped>
-.home { padding: 8px 0; }
+.home-page { padding: 8px 0 40px; }
 
-/* --- Hero --- */
 .hero {
   text-align: center;
   padding: 40px 24px 36px;
@@ -245,13 +388,13 @@ function getPickRoute() {
   background: rgba(59, 130, 246, 0.15);
   border: 1px solid rgba(59, 130, 246, 0.25);
   border-radius: 20px;
-  font-size: 12px;
+  font-size: calc(0.75rem * var(--font-scale));
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 16px;
   backdrop-filter: blur(8px);
 }
 .hero-title {
-  font-size: 32px;
+  font-size: calc(2rem * var(--font-scale));
   font-weight: 800;
   margin-bottom: 10px;
   color: #fff;
@@ -261,12 +404,11 @@ function getPickRoute() {
 }
 .hero-sub {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 15px;
+  font-size: calc(0.9375rem * var(--font-scale));
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
   position: relative;
 }
 
-/* 搜索区域 */
 .search-section { padding: 0 16px; margin-bottom: 20px; }
 .search-section .search-bar {
   background: var(--color-card-glass);
@@ -275,14 +417,19 @@ function getPickRoute() {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 .search-results { margin-top: 8px; }
-.search-results .list { display: flex; flex-direction: column; gap: 1px; background: var(--color-divider); border-radius: var(--radius-card); overflow: hidden; }
-.search-results .list-item { text-decoration: none; color: var(--color-text); background: var(--color-card); padding: 14px 16px; }
+.search-results .list {
+  display: flex; flex-direction: column; gap: 1px;
+  background: var(--color-divider);
+  border-radius: var(--radius-card); overflow: hidden;
+}
+.search-results .list-item {
+  text-decoration: none; color: var(--color-text);
+  background: var(--color-card); padding: 14px 16px;
+}
 .search-results .list-item:hover { background: var(--color-bg); }
 
-/* 轮播区域 */
 .carousel-section { padding: 0 16px; margin-bottom: 20px; }
 
-/* 每日精选 */
 .daily-pick {
   margin: 0 16px 20px;
   position: relative;
@@ -295,47 +442,29 @@ function getPickRoute() {
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 .pick-accent {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
+  position: absolute; top: 0; left: 0;
+  width: 5px; height: 100%;
   background: linear-gradient(180deg, #3B82F6, #10B981);
   border-radius: 0 3px 3px 0;
 }
 .pick-header { margin-bottom: 10px; }
-.pick-title {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--color-text);
-}
+.pick-title { font-size: calc(1.25rem * var(--font-scale)); font-weight: 700; margin-bottom: 8px; color: var(--color-text); }
 .pick-summary {
-  color: var(--color-text-secondary);
-  margin-bottom: 14px;
-  line-height: 1.7;
-  font-size: 14px;
+  color: var(--color-text-secondary); margin-bottom: 14px;
+  line-height: 1.7; font-size: calc(0.875rem * var(--font-scale));
 }
 .pick-link {
-  color: var(--color-primary);
-  font-weight: 600;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  color: var(--color-primary); font-weight: 600; font-size: calc(0.875rem * var(--font-scale));
+  display: inline-flex; align-items: center; gap: 4px;
   transition: gap var(--transition-base);
 }
 .pick-link:hover { gap: 8px; }
 .pick-arrow { transition: transform var(--transition-base); }
 .pick-link:hover .pick-arrow { transform: translateX(2px); }
 
-/* Tab 切换 */
-.tab-section {
-  margin: 0 16px;
-}
+.tab-section { margin: 0 16px 24px; }
 .tab-bar {
   display: flex;
-  position: relative;
   background: var(--color-card);
   border-radius: 12px;
   padding: 4px;
@@ -344,21 +473,14 @@ function getPickRoute() {
 }
 .tab-btn {
   flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   gap: 6px;
   padding: 10px 0;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: calc(0.875rem * var(--font-scale)); font-weight: 600;
   color: var(--color-text-secondary);
-  background: none;
-  border: none;
-  border-radius: 10px;
+  background: none; border: none; border-radius: 10px;
   cursor: pointer;
   transition: all var(--transition-base);
-  position: relative;
-  z-index: 1;
 }
 .tab-btn.active {
   color: #fff;
@@ -369,120 +491,213 @@ function getPickRoute() {
   color: var(--color-text);
   background: var(--color-bg);
 }
-.tab-icon { font-size: 16px; }
-.tab-indicator {
-  position: absolute;
-  bottom: 4px;
-  height: 3px;
-  background: var(--color-primary);
-  border-radius: 3px;
-  transition: all var(--transition-base);
-  z-index: 0;
+.tab-icon { font-size: calc(1rem * var(--font-scale)); }
+.tab-content { min-height: 160px; }
+.tab-footer {
+  text-align: center;
+  margin-top: 16px;
 }
-.tab-content {
-  min-height: 140px;
+.view-more {
+  color: var(--color-primary);
+  font-size: calc(0.875rem * var(--font-scale)); font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition-base);
+}
+.view-more:hover { opacity: 0.8; }
+
+.knowledge-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.kp-card {
+  display: flex; flex-direction: column;
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  text-decoration: none; color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+.kp-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.kp-card-accent { height: 4px; flex-shrink: 0; }
+.kp-card-body { padding: 14px; flex: 1; }
+.kp-card-tag {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: calc(0.6875rem * var(--font-scale)); font-weight: 600;
+  margin-bottom: 8px;
+}
+.kp-card-title {
+  font-size: calc(0.875rem * var(--font-scale)); font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px;
+  line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.kp-card-summary {
+  font-size: calc(0.75rem * var(--font-scale)); color: var(--color-text-secondary);
+  line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
 }
 
-/* 板块卡片 */
-.board-grid {
+.topics-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
-.board-card {
-  border-radius: 14px;
-  padding: 24px 16px 20px;
-  text-align: center;
-  text-decoration: none;
-  color: #fff;
-  transition: all var(--transition-base);
-  position: relative;
+.topic-card {
+  display: flex; flex-direction: column;
+  background: var(--color-card);
+  border-radius: var(--radius-card);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 130px;
-}
-.board-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-  transition: opacity var(--transition-base);
-}
-.board-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-.board-card:hover::before { opacity: 1; }
-
-.board-knowledge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-.board-topics {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-.board-history {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-
-.board-icon-wrap {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  transition: transform var(--transition-base);
-}
-.board-card:hover .board-icon-wrap {
-  transform: scale(1.1);
-}
-.board-icon { font-size: 24px; }
-.board-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
-.board-count { font-size: 12px; opacity: 0.85; }
-
-/* 分类标签 */
-.category-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.cat-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: var(--radius-pill);
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  color: var(--color-text);
-  background: var(--color-card-glass);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  text-decoration: none; color: inherit;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
 }
-.cat-tag:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-  border-color: var(--tag-color, var(--color-primary));
+.topic-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
 }
-.cat-tag-icon { font-size: 16px; }
-.cat-tag-name { white-space: nowrap; }
+.topic-card-accent { height: 4px; flex-shrink: 0; }
+.topic-card-body { padding: 14px; flex: 1; }
+.topic-card-tag {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: calc(0.6875rem * var(--font-scale)); font-weight: 600;
+  margin-bottom: 8px;
+}
+.topic-card-title {
+  font-size: calc(0.875rem * var(--font-scale)); font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.topic-card-summary {
+  font-size: calc(0.75rem * var(--font-scale)); color: var(--color-text-secondary);
+  line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.history-scroll {
+  overflow-x: auto;
+  margin: 0 -16px;
+  padding: 0 16px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+.history-scroll::-webkit-scrollbar { height: 4px; }
+.history-scroll::-webkit-scrollbar-track { background: transparent; }
+.history-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-border); border-radius: 2px;
+}
+.history-track {
+  display: flex; gap: 12px;
+  min-width: max-content;
+  padding-bottom: 4px;
+}
+.history-card {
+  width: 200px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  text-decoration: none; color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+.history-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.history-year {
+  font-size: calc(0.75rem * var(--font-scale)); font-weight: 700;
+  padding: 10px 14px 0;
+  color: var(--color-text-secondary);
+}
+.history-accent { height: 3px; margin: 6px 14px 0; border-radius: 2px; }
+.history-title {
+  font-size: calc(0.875rem * var(--font-scale)); font-weight: 600;
+  padding: 8px 14px 0;
+  color: var(--color-text);
+  line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.history-summary {
+  font-size: calc(0.75rem * var(--font-scale)); color: var(--color-text-secondary);
+  padding: 6px 14px 14px;
+  line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+.featured-section { margin: 0 16px 24px; }
+.section-header { margin-bottom: 16px; }
+.section-title {
+  font-size: calc(1.125rem * var(--font-scale)); font-weight: 700;
+  color: var(--color-text);
+  display: flex; align-items: center; gap: 8px;
+}
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.featured-card {
+  display: flex; flex-direction: column;
+  padding: 18px 16px;
+  background: color-mix(in srgb, var(--cat-color) 6%, var(--color-card));
+  border: 1px solid color-mix(in srgb, var(--cat-color) 15%, var(--color-border));
+  border-radius: var(--radius-card);
+  text-decoration: none; color: inherit;
+  transition: all var(--transition-base);
+}
+.featured-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.featured-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-badge);
+  font-size: calc(0.6875rem * var(--font-scale)); font-weight: 600; color: #fff;
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+.featured-title {
+  font-size: calc(0.9375rem * var(--font-scale)); font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 6px; line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.featured-summary {
+  font-size: calc(0.8125rem * var(--font-scale)); color: var(--color-text-secondary);
+  line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+
+@media (max-width: 700px) {
+  .knowledge-grid { grid-template-columns: repeat(2, 1fr); }
+  .topics-grid { grid-template-columns: repeat(2, 1fr); }
+  .featured-grid { grid-template-columns: repeat(2, 1fr); }
+}
 
 @media (max-width: 600px) {
-  .board-grid { grid-template-columns: 1fr; }
   .hero { padding: 32px 20px 28px; }
-  .hero-title { font-size: 26px; }
+  .hero-title { font-size: calc(1.625rem * var(--font-scale)); }
+  .knowledge-grid { grid-template-columns: 1fr; }
+  .topics-grid { grid-template-columns: 1fr; }
+  .featured-grid { grid-template-columns: 1fr; }
+  .history-card { width: 180px; }
+  .tab-btn { font-size: calc(0.8125rem * var(--font-scale)); gap: 4px; }
+  .tab-icon { font-size: calc(0.875rem * var(--font-scale)); }
 }
 </style>

@@ -1,11 +1,11 @@
 <template>
   <div class="page-enter">
     <Breadcrumb
-      sectionName="知识点分类"
+      sectionName="智慧结晶分类"
       sectionLink="/knowledge"
       :title="categoryName"
     />
-    <p class="section-subtitle">共 {{ items.length }} 个知识点</p>
+    <p class="section-subtitle">共 {{ items.length }} 个智慧结晶</p>
     <div class="list">
       <router-link
         v-for="item in visibleItems"
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getKnowledgeByCategory, getCategories } from '@/utils/data'
 import Breadcrumb from '@/components/Breadcrumb.vue'
@@ -38,11 +38,19 @@ const route = useRoute()
 const category = computed(() => route.params.category)
 const categoryName = computed(() => {
   const cat = getCategories().find(c => c.id === category.value)
-  return cat ? cat.name : '全部知识点'
+  return cat ? cat.name : '全部智慧结晶'
 })
-const items = computed(() => getKnowledgeByCategory(category.value))
+const items = ref([])
 const visibleCount = ref(10)
 const visibleItems = computed(() => items.value.slice(0, visibleCount.value))
+
+async function loadData() {
+  items.value = await getKnowledgeByCategory(category.value)
+}
+
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <style scoped>

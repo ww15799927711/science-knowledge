@@ -3,11 +3,11 @@
     <h1 class="section-title">🔍 搜索</h1>
     <div class="search-bar">
       <span class="search-icon">🔍</span>
-      <input v-model="keyword" placeholder="搜索知识点、话题、历史事件..." @input="doSearch" />
+      <input v-model="keyword" placeholder="搜索智慧结晶、话题、历史事件..." @input="debouncedSearch" />
     </div>
     <div v-if="searched">
       <div v-if="results.knowledge.length > 0">
-        <h2 class="section-subtitle" style="margin-top: 16px;">知识点 ({{ results.knowledge.length }})</h2>
+        <h2 class="section-subtitle" style="margin-top: 16px;">智慧结晶 ({{ results.knowledge.length }})</h2>
         <div class="list">
           <router-link
             v-for="r in results.knowledge"
@@ -63,16 +63,20 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onUnmounted } from 'vue'
 import { searchAll } from '@/utils/search'
 
 const keyword = ref('')
 const searched = ref(false)
 const results = reactive({ knowledge: [], topics: [], history: [] })
+let searchTimer = null
 
 function doSearch() {
   if (!keyword.value.trim()) {
     searched.value = false
+    results.knowledge = []
+    results.topics = []
+    results.history = []
     return
   }
   searched.value = true
@@ -81,6 +85,15 @@ function doSearch() {
   results.topics = r.topics
   results.history = r.history
 }
+
+function debouncedSearch() {
+  if (searchTimer) clearTimeout(searchTimer)
+  searchTimer = setTimeout(doSearch, 300)
+}
+
+onUnmounted(() => {
+  if (searchTimer) clearTimeout(searchTimer)
+})
 </script>
 
 <style scoped>

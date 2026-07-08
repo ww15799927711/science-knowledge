@@ -1,5 +1,5 @@
 <template>
-  <div class="carousel" @mouseenter="pause" @mouseleave="resume">
+  <div class="carousel" @mouseenter="pause" @mouseleave="resume" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd">
     <div class="carousel-track" :style="trackStyle">
       <div
         v-for="(slide, index) in slides"
@@ -8,7 +8,7 @@
         :class="{ active: index === current }"
       >
         <router-link :to="slide.link" class="slide-link">
-          <img :src="slide.image" :alt="slide.title" class="slide-img" />
+          <img :src="slide.image" :alt="slide.title" class="slide-img" :loading="index === 0 ? 'eager' : 'lazy'" />
           <div class="slide-overlay"></div>
           <div class="slide-content">
             <h2 class="slide-title">{{ slide.title }}</h2>
@@ -17,10 +17,8 @@
         </router-link>
       </div>
     </div>
-    <!-- Navigation arrows -->
     <button class="carousel-btn carousel-prev" @click="prev" aria-label="上一张">‹</button>
     <button class="carousel-btn carousel-next" @click="next" aria-label="下一张">›</button>
-    <!-- Dot indicators -->
     <div class="carousel-dots">
       <button
         v-for="(slide, index) in slides"
@@ -48,7 +46,7 @@ let timer = null
 
 const trackStyle = computed(() => ({
   transform: `translateX(-${current.value * 100}%)`,
-  transition: 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+  transition: isDragging.value ? 'none' : 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
 }))
 
 function next() {
@@ -71,6 +69,36 @@ function startTimer() {
 
 onMounted(() => { startTimer() })
 onBeforeUnmount(() => { clearInterval(timer) })
+
+const isDragging = ref(false)
+const startX = ref(0)
+const deltaX = ref(0)
+
+function onTouchStart(e) {
+  if (props.slides.length <= 1) return
+  isDragging.value = true
+  startX.value = e.touches[0].clientX
+  deltaX.value = 0
+  pause()
+}
+
+function onTouchMove(e) {
+  if (!isDragging.value || props.slides.length <= 1) return
+  deltaX.value = e.touches[0].clientX - startX.value
+}
+
+function onTouchEnd() {
+  if (!isDragging.value || props.slides.length <= 1) return
+  isDragging.value = false
+  const threshold = 50
+  if (deltaX.value > threshold) {
+    prev()
+  } else if (deltaX.value < -threshold) {
+    next()
+  }
+  deltaX.value = 0
+  resume()
+}
 </script>
 
 <style scoped>
@@ -82,6 +110,8 @@ onBeforeUnmount(() => { clearInterval(timer) })
   box-shadow: var(--shadow-md);
   margin-bottom: 24px;
   background: var(--color-card);
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 .carousel-track {
   display: flex;
@@ -121,13 +151,13 @@ onBeforeUnmount(() => { clearInterval(timer) })
   color: #fff;
 }
 .slide-title {
-  font-size: 22px;
+  font-size: calc(1.375rem * var(--font-scale));
   font-weight: 700;
   margin-bottom: 6px;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 .slide-subtitle {
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
   opacity: 0.9;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   line-height: 1.6;
@@ -144,7 +174,7 @@ onBeforeUnmount(() => { clearInterval(timer) })
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
-  font-size: 22px;
+  font-size: calc(1.375rem * var(--font-scale));
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -191,9 +221,9 @@ onBeforeUnmount(() => { clearInterval(timer) })
 
 @media (max-width: 600px) {
   .slide-img { height: 200px; }
-  .slide-title { font-size: 18px; }
-  .slide-subtitle { font-size: 13px; }
+  .slide-title { font-size: calc(1.125rem * var(--font-scale)); }
+  .slide-subtitle { font-size: calc(0.8125rem * var(--font-scale)); }
   .slide-content { padding: 16px 18px; }
-  .carousel-btn { width: 32px; height: 32px; font-size: 18px; }
+  .carousel-btn { width: 32px; height: 32px; font-size: calc(1.125rem * var(--font-scale)); }
 }
 </style>

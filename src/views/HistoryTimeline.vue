@@ -18,19 +18,33 @@
         </div>
         <div class="period-name">{{ period.name }}</div>
         <div class="period-theme">{{ period.theme }}</div>
-        <div class="period-count">{{ getCount(period.name) }} 条</div>
+        <div class="period-count">{{ getCount(period.id) }} 条</div>
       </router-link>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { getHistoryPeriods, getAllHistory } from '@/utils/data'
 
 const periods = getHistoryPeriods()
-function getCount(name) {
-  return getAllHistory().filter(h => h.period === name).length
+const allHistory = ref([])
+
+function getCount(periodId) {
+  const period = periods.find(p => p.id === periodId)
+  if (!period) return 0
+  // Match by both period ID and period name for compatibility
+  return allHistory.value.filter(h => h.period === period.name || h.period === periodId).length
 }
+
+async function loadData() {
+  allHistory.value = await getAllHistory()
+}
+
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <style scoped>
@@ -91,7 +105,7 @@ function getCount(name) {
   z-index: 1;
 }
 .period-icon {
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
   font-weight: 700;
   color: var(--icon-color);
   opacity: 0.7;
@@ -110,7 +124,7 @@ function getCount(name) {
 }
 .period-name {
   font-weight: 700;
-  font-size: 15px;
+  font-size: calc(0.9375rem * var(--font-scale));
   padding: 18px 14px 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -118,7 +132,7 @@ function getCount(name) {
   max-width: 100%;
 }
 .period-theme {
-  font-size: 12px;
+  font-size: calc(0.75rem * var(--font-scale));
   color: var(--color-text-secondary);
   padding: 6px 14px 0;
   overflow: hidden;
@@ -127,7 +141,7 @@ function getCount(name) {
   max-width: 100%;
 }
 .period-count {
-  font-size: 12px;
+  font-size: calc(0.75rem * var(--font-scale));
   color: var(--color-text-hint);
   padding: 6px 14px 14px;
 }

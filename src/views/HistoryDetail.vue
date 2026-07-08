@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getHistoryById, getHistoryPeriods } from '@/utils/data'
 import { getRelatedItems } from '@/utils/cross-ref'
@@ -61,7 +61,9 @@ import ImageHero from '@/components/ImageHero.vue'
 import TwikooComment from '@/components/TwikooComment.vue'
 
 const route = useRoute()
-const item = computed(() => getHistoryById(route.params.id))
+const item = ref(null)
+const relatedKnowledge = ref([])
+const relatedTopics = ref([])
 
 const periodImage = computed(() => {
   if (!item.value) return ''
@@ -69,8 +71,18 @@ const periodImage = computed(() => {
   return p ? p.image || '' : ''
 })
 
-const relatedKnowledge = computed(() => item.value ? getRelatedItems(item.value.relatedKnowledge, 'knowledge') : [])
-const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.relatedTopics, 'topics') : [])
+async function loadData() {
+  const data = await getHistoryById(route.params.id)
+  item.value = data
+  if (data) {
+    relatedKnowledge.value = await getRelatedItems(data.relatedKnowledge, 'knowledge')
+    relatedTopics.value = await getRelatedItems(data.relatedTopics, 'topics')
+  }
+}
+
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <style scoped>
@@ -86,7 +98,7 @@ const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.rel
 }
 .detail-badges { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
 .detail-title {
-  font-size: 22px;
+  font-size: calc(1.375rem * var(--font-scale));
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: 8px;
@@ -95,13 +107,13 @@ const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.rel
 .detail-meta {
   color: var(--color-text-secondary);
   margin-bottom: 4px;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
 }
 .detail-summary {
   color: var(--color-text-secondary);
   margin-bottom: 16px;
   line-height: 1.7;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
 }
 .detail-section { margin-top: 16px; }
 .info-box {
@@ -109,7 +121,7 @@ const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.rel
   border-radius: var(--radius-sm);
   padding: 12px;
   margin-top: 12px;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
   line-height: 1.8;
   color: var(--color-text-secondary);
 }
@@ -120,7 +132,7 @@ const relatedTopics = computed(() => item.value ? getRelatedItems(item.value.rel
   padding: 12px;
   margin-top: 12px;
   font-style: italic;
-  font-size: 15px;
+  font-size: calc(0.9375rem * var(--font-scale));
   color: var(--color-text-secondary);
   border-radius: 0 var(--radius-badge) var(--radius-badge) 0;
 }

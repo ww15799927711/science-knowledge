@@ -7,7 +7,7 @@
       </router-link>
       <div class="navbar-links" :class="{ open: menuOpen }">
         <router-link to="/" class="nav-link" @click="menuOpen = false">首页</router-link>
-        <router-link to="/knowledge" class="nav-link" @click="menuOpen = false">知识点</router-link>
+        <router-link to="/knowledge" class="nav-link" @click="menuOpen = false">智慧结晶</router-link>
         <router-link to="/topics" class="nav-link" @click="menuOpen = false">轻松话题</router-link>
         <router-link to="/history" class="nav-link" @click="menuOpen = false">科学简史</router-link>
         <router-link to="/settings" class="nav-link" @click="menuOpen = false">设置</router-link>
@@ -48,9 +48,9 @@ const menuOpen = ref(false)
   text-decoration: none;
   color: var(--color-text);
   font-weight: 700;
-  font-size: 18px;
+  font-size: calc(1.125rem * var(--font-scale));
 }
-.brand-icon { font-size: 24px; }
+.brand-icon { font-size: calc(1.5rem * var(--font-scale)); }
 .navbar-links {
   display: flex;
   gap: 4px;
@@ -61,7 +61,7 @@ const menuOpen = ref(false)
   border-radius: 6px;
   color: var(--color-text-secondary);
   text-decoration: none;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
   transition: all 0.2s;
 }
 .nav-link:hover, .nav-link.router-link-active {
@@ -72,7 +72,7 @@ const menuOpen = ref(false)
   display: none;
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: calc(1.5rem * var(--font-scale));
   color: var(--color-text);
   cursor: pointer;
   margin-left: auto;

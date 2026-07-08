@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const currentTheme = ref(localStorage.getItem('theme') || 'light')
 const currentFont = ref(localStorage.getItem('fontSize') || 'medium')
@@ -12,7 +12,7 @@ export function useTheme() {
   return {
     currentTheme,
     currentFont,
-    fontClass: ref('font-' + currentFont.value),
+    fontClass: computed(() => 'font-' + currentFont.value),
     setTheme,
     setFontSize
   }

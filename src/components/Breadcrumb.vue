@@ -30,7 +30,7 @@ defineProps({
   gap: 4px;
   margin-bottom: 16px;
   padding: 8px 14px;
-  font-size: 13px;
+  font-size: calc(0.8125rem * var(--font-scale));
   color: var(--color-text-hint);
   background: var(--color-card);
   background: var(--color-card-glass);

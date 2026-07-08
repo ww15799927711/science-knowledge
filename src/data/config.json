@@ -1,33 +1,33 @@
 {
   "version": "1.0.1",
   "minVersion": "1.0.0",
-  "knowledgeCount": 275,
-  "topicCount": 43,
-  "historyCount": 119,
+  "knowledgeCount": 303,
+  "topicCount": 143,
+  "historyCount": 152,
   "categories": [
     {
-      "id": "物理",
-      "name": "物理",
+      "id": "物理定律",
+      "name": "物理定律",
       "icon": "⚡",
       "color": "#E74C3C",
       "description": "探索物质与能量的规律",
-      "image": "/images/categories/物理.jpg"
+      "image": "/images/categories/物理定律.jpg"
     },
     {
-      "id": "化学",
-      "name": "化学",
+      "id": "化学探秘",
+      "name": "化学探秘",
       "icon": "⚗️",
       "color": "#1ABC9C",
       "description": "分子与原子的奇妙变化",
-      "image": "/images/categories/化学.jpg"
+      "image": "/images/categories/化学探秘.jpg"
     },
     {
-      "id": "生物",
-      "name": "生物",
+      "id": "生物奥秘",
+      "name": "生物奥秘",
       "icon": "🧬",
       "color": "#9B59B6",
       "description": "生命的奥秘与演化",
-      "image": "/images/categories/生物.jpg"
+      "image": "/images/categories/生物奥秘.jpg"
     },
     {
       "id": "地球科学",
@@ -38,12 +38,12 @@
       "image": "/images/categories/地球科学.jpg"
     },
     {
-      "id": "天文",
-      "name": "天文",
+      "id": "宇宙探索",
+      "name": "宇宙探索",
       "icon": "🌌",
       "color": "#3498DB",
       "description": "仰望星空的无限可能",
-      "image": "/images/categories/天文.jpg"
+      "image": "/images/categories/宇宙探索.jpg"
     },
     {
       "id": "材料与工程",
@@ -92,6 +92,22 @@
       "color": "#795548",
       "description": "塑造人类栖居空间",
       "image": "/images/categories/建筑与交通.jpg"
+    },
+    {
+      "id": "数字规则",
+      "name": "数字规则",
+      "icon": "🔢",
+      "color": "#673AB7",
+      "description": "数学的逻辑与美感",
+      "image": "/images/categories/数字规则.jpg"
+    },
+    {
+      "id": "心理与认知",
+      "name": "心理与认知",
+      "icon": "🧠",
+      "color": "#00BCD4",
+      "description": "探索思维与行为的奥秘",
+      "image": "/images/categories/心理与认知.jpg"
     }
   ],
   "topicSubcategories": [
@@ -202,7 +218,7 @@
       "image": "/images/history/信息时代.jpg"
     },
     {
-      "id": "第四次工业革命 / 工业4.0",
+      "id": "第四次工业革命",
       "name": "第四次工业革命 / 工业4.0",
       "theme": "智能化与数字化融合",
       "color": "#9C27B0",
@@ -222,19 +238,19 @@
       "image": "/images/carousel/cosmos.jpg",
       "title": "探索宇宙深处",
       "subtitle": "从微观粒子到浩瀚星系，科学带你领略自然的壮美",
-      "link": "/knowledge/天文"
+      "link": "/knowledge/宇宙探索"
     },
     {
       "image": "/images/carousel/earth.jpg",
       "title": "生命的奇迹",
       "subtitle": "从深海热泉到雨林树冠，每个角落都藏着科学的秘密",
-      "link": "/knowledge/生物"
+      "link": "/knowledge/生物奥秘"
     },
     {
       "image": "/images/carousel/micro.jpg",
       "title": "微观世界",
       "subtitle": "DNA的双螺旋、分子的舞蹈——看不见的世界同样精彩",
-      "link": "/knowledge/化学"
+      "link": "/knowledge/化学探秘"
     },
     {
       "image": "/images/carousel/tech.jpg",

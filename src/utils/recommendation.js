@@ -1,8 +1,6 @@
-import knowledgeData from '@/data/knowledge.json'
-import topicsData from '@/data/topics.json'
-import historyData from '@/data/history.json'
+import { getAllKnowledge, getAllTopics, getAllHistory } from '@/utils/data'
 
-export function getDailyPick() {
+export async function getDailyPick() {
   const today = new Date()
   const dateStr = today.toISOString().split('T')[0].replace(/-/g, '')
   const dayNum = parseInt(dateStr)
@@ -12,16 +10,17 @@ export function getDailyPick() {
   const type = types[typeIndex]
 
   const dataMap = {
-    knowledge: { data: knowledgeData, idField: 'kpId' },
-    topics: { data: topicsData, idField: 'topicId' },
-    history: { data: historyData, idField: 'entryId' }
+    knowledge: { dataFn: getAllKnowledge, idField: 'kpId' },
+    topics: { dataFn: getAllTopics, idField: 'topicId' },
+    history: { dataFn: getAllHistory, idField: 'entryId' }
   }
 
-  const { data, idField } = dataMap[type]
+  const { dataFn, idField } = dataMap[type]
+  const data = await dataFn()
   const item = data[dayNum % data.length]
 
   const reasons = {
-    knowledge: ['今日知识点', '每天学一点', '知识积累', '探索未知'],
+    knowledge: ['今日智慧结晶', '每天学一点', '知识积累', '探索未知'],
     topics: ['有趣的话题', '生活大揭秘', '好奇心时间', '你知道吗'],
     history: ['科学里程碑', '探索历程', '回顾与前行', '历史今天']
   }

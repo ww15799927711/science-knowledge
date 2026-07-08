@@ -1,50 +1,82 @@
-// Twikoo comment system integration
-import knowledgeData from '@/data/knowledge.json'
-import topicsData from '@/data/topics.json'
-import historyData from '@/data/history.json'
 import configData from '@/data/config.json'
 
-// Knowledge
-export function getAllKnowledge() { return knowledgeData }
-export function getKnowledgeById(id) { return knowledgeData.find(k => k.kpId === Number(id)) }
-export function getKnowledgeByCategory(category) {
-  if (category === 'all') return knowledgeData
-  return knowledgeData.filter(k => {
-    const cat = configData.categories.find(c => c.id === category)
-    return cat ? k.category === cat.name || k.category === category : false
-  })
+let knowledgeData = null
+let topicsData = null
+let historyData = null
+
+async function loadKnowledge() {
+  if (!knowledgeData) {
+    const module = await import('@/data/knowledge.json')
+    knowledgeData = module.default
+  }
+  return knowledgeData
 }
-export function getKnowledgeCountByCategory(catId) {
+
+async function loadTopics() {
+  if (!topicsData) {
+    const module = await import('@/data/topics.json')
+    topicsData = module.default
+  }
+  return topicsData
+}
+
+async function loadHistory() {
+  if (!historyData) {
+    const module = await import('@/data/history.json')
+    historyData = module.default
+  }
+  return historyData
+}
+
+export { configData }
+
+export async function getAllKnowledge() { return await loadKnowledge() }
+export async function getKnowledgeById(id) {
+  const data = await loadKnowledge()
+  return data.find(k => k.kpId === Number(id))
+}
+export async function getKnowledgeByCategory(category) {
+  const data = await loadKnowledge()
+  if (category === 'all') return data
+  const cat = configData.categories.find(c => c.id === category)
+  return data.filter(k => cat ? k.category === cat.name || k.category === category : false)
+}
+export async function getKnowledgeCountByCategory(catId) {
   const cat = configData.categories.find(c => c.id === catId)
   if (!cat) return 0
-  return knowledgeData.filter(k => k.category === cat.name || k.category === catId).length
+  const data = await loadKnowledge()
+  return data.filter(k => k.category === cat.name || k.category === catId).length
 }
 
-// Topics
-export function getAllTopics() { return topicsData }
-export function getTopicById(id) { return topicsData.find(t => t.topicId === Number(id)) }
-export function getTopicsBySubcategory(sub) {
-  if (sub === 'all') return topicsData
-  return topicsData.filter(t => {
-    const subcat = configData.topicSubcategories.find(s => s.id === sub)
-    return subcat ? t.subcategory === subcat.name || t.subcategory === sub : false
-  })
+export async function getAllTopics() { return await loadTopics() }
+export async function getTopicById(id) {
+  const data = await loadTopics()
+  return data.find(t => t.topicId === Number(id))
+}
+export async function getTopicsBySubcategory(sub) {
+  const data = await loadTopics()
+  if (sub === 'all') return data
+  const subcat = configData.topicSubcategories.find(s => s.id === sub)
+  return data.filter(t => subcat ? t.subcategory === subcat.name || t.subcategory === sub : false)
 }
 
-// History
-export function getAllHistory() { return historyData }
-export function getHistoryById(id) { return historyData.find(h => h.entryId === Number(id)) }
-export function getHistoryByPeriod(period) {
-  if (period === 'all') return historyData
-  return historyData.filter(h => {
-    const p = configData.historyPeriods.find(p => p.id === period)
-    return p ? h.period === p.name || h.period === period : false
-  })
+export async function getAllHistory() { return await loadHistory() }
+export async function getHistoryById(id) {
+  const data = await loadHistory()
+  return data.find(h => h.entryId === Number(id))
+}
+export async function getHistoryByPeriod(period) {
+  const data = await loadHistory()
+  if (period === 'all') return data
+  const p = configData.historyPeriods.find(p => p.id === period)
+  return data.filter(h => p ? h.period === p.name || h.period === period : false)
 }
 
-// Config
 export function getConfig() { return configData }
 export function getCategories() { return configData.categories }
 export function getTopicSubcategories() { return configData.topicSubcategories }
 export function getHistoryPeriods() { return configData.historyPeriods }
 export function getCarousel() { return configData.carousel || [] }
+export function getKnowledgeCount() { return configData.knowledgeCount || 0 }
+export function getTopicCount() { return configData.topicCount || 0 }
+export function getHistoryCount() { return configData.historyCount || 0 }

@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getTopicById, getTopicSubcategories } from '@/utils/data'
 import { getRelatedItems } from '@/utils/cross-ref'
@@ -52,7 +52,9 @@ import TwikooComment from '@/components/TwikooComment.vue'
 
 const route = useRoute()
 const subcategory = computed(() => route.params.subcategory)
-const item = computed(() => getTopicById(route.params.id))
+const item = ref(null)
+const relatedKnowledge = ref([])
+const relatedHistory = ref([])
 
 const subcategoryImage = computed(() => {
   if (!item.value) return ''
@@ -60,8 +62,18 @@ const subcategoryImage = computed(() => {
   return sub ? sub.image || '' : ''
 })
 
-const relatedKnowledge = computed(() => item.value ? getRelatedItems(item.value.relatedKnowledge, 'knowledge') : [])
-const relatedHistory = computed(() => item.value ? getRelatedItems(item.value.relatedHistory, 'history') : [])
+async function loadData() {
+  const data = await getTopicById(route.params.id)
+  item.value = data
+  if (data) {
+    relatedKnowledge.value = await getRelatedItems(data.relatedKnowledge, 'knowledge')
+    relatedHistory.value = await getRelatedItems(data.relatedHistory, 'history')
+  }
+}
+
+onMounted(() => {
+  loadData()
+})
 </script>
 
 <style scoped>
@@ -77,7 +89,7 @@ const relatedHistory = computed(() => item.value ? getRelatedItems(item.value.re
 }
 .detail-badges { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
 .detail-title {
-  font-size: 22px;
+  font-size: calc(1.375rem * var(--font-scale));
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: 8px;
@@ -87,7 +99,7 @@ const relatedHistory = computed(() => item.value ? getRelatedItems(item.value.re
   color: var(--color-text-secondary);
   margin-bottom: 16px;
   line-height: 1.7;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
 }
 .detail-section { margin-top: 16px; }
 .fun-fact-box {
@@ -96,7 +108,7 @@ const relatedHistory = computed(() => item.value ? getRelatedItems(item.value.re
   padding: 12px;
   border-radius: 0 var(--radius-badge) var(--radius-badge) 0;
   margin-top: 16px;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
   line-height: 1.8;
   color: var(--color-text-secondary);
 }

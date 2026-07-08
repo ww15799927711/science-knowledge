@@ -1,6 +1,6 @@
 <template>
   <div class="page-enter">
-    <h1 class="section-title">⚛️ 知识点分类</h1>
+    <h1 class="section-title">⚛️ 智慧结晶分类</h1>
     <p class="section-subtitle">共 {{ categories.length }} 个学科分类</p>
     <div class="grid">
       <router-link
@@ -24,10 +24,23 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { getCategories, getKnowledgeCountByCategory } from '@/utils/data'
 
 const categories = getCategories()
-function getCount(catId) { return getKnowledgeCountByCategory(catId) }
+const counts = ref({})
+
+onMounted(async () => {
+  const results = await Promise.all(
+    categories.map(async cat => {
+      const count = await getKnowledgeCountByCategory(cat.id)
+      return [cat.id, count]
+    })
+  )
+  counts.value = Object.fromEntries(results)
+})
+
+function getCount(catId) { return counts.value[catId] ?? '...' }
 </script>
 
 <style scoped>
@@ -87,10 +100,10 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   background: color-mix(in srgb, var(--icon-color) 50%, transparent);
   transform: scale(1.1);
 }
-.cat-icon { font-size: 18px; }
+.cat-icon { font-size: calc(1.125rem * var(--font-scale)); }
 .cat-name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
   padding: 20px 12px 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -98,12 +111,12 @@ function getCount(catId) { return getKnowledgeCountByCategory(catId) }
   max-width: 100%;
 }
 .cat-count {
-  font-size: 12px;
+  font-size: calc(0.75rem * var(--font-scale));
   color: var(--color-text-hint);
   padding: 0 12px 14px;
 }
 .cat-desc {
-  font-size: 11px;
+  font-size: calc(0.6875rem * var(--font-scale));
   color: var(--color-text-secondary);
   padding: 4px 12px 0;
   overflow: hidden;

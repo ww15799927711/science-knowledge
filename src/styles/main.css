@@ -73,9 +73,9 @@
 }
 
 /* --- 字号 --- */
-.font-small { --font-scale: 0.87; }
+.font-small { --font-scale: 0.82; }
 .font-medium { --font-scale: 1; }
-.font-large { --font-scale: 1.13; }
+.font-large { --font-scale: 1.22; }
 
 /* --- 基础重置 --- */
 * {
@@ -167,7 +167,7 @@ a:hover {
   border-radius: 0 var(--radius-badge) var(--radius-badge) 0;
   padding: 10px 12px;
   margin: 12px 0;
-  font-size: 14px;
+  font-size: calc(0.875rem * var(--font-scale));
   line-height: 1.8;
   color: var(--color-text-secondary);
 }
@@ -176,7 +176,7 @@ a:hover {
   text-align: center;
   margin: 20px 0;
   color: var(--color-text-hint);
-  font-size: 12px;
+  font-size: calc(0.75rem * var(--font-scale));
   letter-spacing: 4px;
 }
 
@@ -255,7 +255,7 @@ a:hover {
 }
 
 .ref-type {
-  font-size: 11px;
+  font-size: calc(0.6875rem * var(--font-scale));
   color: var(--color-primary);
   background: var(--color-primary-light);
   padding: 2px 6px;
@@ -275,7 +275,7 @@ a:hover {
 }
 
 .ref-arrow {
-  font-size: 12px;
+  font-size: calc(0.75rem * var(--font-scale));
   color: var(--color-text-hint);
   margin-left: 6px;
 }
@@ -313,7 +313,7 @@ a:hover {
 }
 
 .search-icon {
-  font-size: 16px;
+  font-size: calc(1rem * var(--font-scale));
   margin-right: 8px;
   color: var(--color-text-hint);
 }
@@ -364,7 +364,7 @@ a:hover {
 }
 
 .list-item-id {
-  font-size: 11px;
+  font-size: calc(0.6875rem * var(--font-scale));
   color: var(--color-text-hint);
   margin-right: 8px;
   min-width: 30px;
@@ -380,7 +380,7 @@ a:hover {
 }
 
 .empty-icon {
-  font-size: 40px;
+  font-size: calc(2.5rem * var(--font-scale));
   margin-bottom: 12px;
 }
 
